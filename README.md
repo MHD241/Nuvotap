@@ -1,43 +1,30 @@
-# NUVOTAP — GitHub Pages storefront
-
-A full responsive **preview storefront** using HTML, CSS and JavaScript. No build tools required.
-
-## What works right now
-- Responsive home page and detailed product popups
-- Single (£20) and Duo (£30) product options
-- Working basket: add, remove, quantity, subtotal, persistent in your browser using localStorage
-- Checkout contact, business and delivery details form with browser-side validation
-- Order summary; FAQs; policy preview panels; mobile navigation
-- An enquiry email can be prepared once you configure a real business email
-
-## Important: payments are NOT live
-GitHub Pages is static hosting and cannot safely process bank-card numbers or create authenticated payment transactions by itself. This website intentionally **does not ask for or store card numbers**. Never add Stripe secret keys or PayPal secrets to this GitHub repository. There is no charge or completed purchase when someone uses this checkout preview.
-
-To take real payments, a parent/guardian or eligible business account holder needs to set up an appropriate payment service and confirm the business's legal, tax, privacy, delivery and returns arrangements. An actual checkout integration will require either (a) hosted payment links with suitable cart limitations or (b) a secure backend/serverless function that creates order-specific checkout sessions. Do not simply turn off the preview warning without implementing and testing a real payment integration.
-
-## Publish on GitHub Pages
-1. Unzip the download.
-2. Create a GitHub repository, for example `nuvotap`.
-3. Upload **the contents of** `NUVOTAP-GitHub` into the repository root (not an extra nested folder).
-4. Commit the files.
-5. In your repository open **Settings → Pages**, choose **Deploy from a branch**, branch **main**, folder **/(root)**, then save.
-6. Wait for GitHub to show the public URL, usually `https://YOUR-USERNAME.github.io/nuvotap/`.
-7. Test the site on mobile: menu, product detail, basket, checkout and email enquiry.
-
-## Setup before inviting customers
-- Change `contactEmail` in `config.js` to a monitored **business** email (not a personal school email). The checkout enquiry uses the visitor's local email app; it **does not send automatically**.
-- Replace the concept product visuals with photos of your real tested cards after you have them. The current visuals are illustrative HTML/CSS renders.
-- Confirm the advertised £20 / £30 prices and supplier charges.
-- Update the privacy policy, delivery/returns terms, contact details, and product specs before any real sales.
-- Add a compliant, real hosted payment checkout only after the payment-provider setup is complete.
-- Check that `nuvotap` name and branding do not infringe others' registered marks.
+# NUVOTAP V2 — GitHub Pages website
 
 ## Files
-- `index.html`: page structure and checkout
-- `styles.css`: responsive styling and CSS product visuals
-- `app.js`: basket, modals and enquiry handling
-- `config.js`: contact configuration; checkout remains preview-only
-- `assets/nuvotap-logo.png`: uploaded logo reference (preserved in assets)
-- `assets/favicon.svg`: small temporary vector favicon
+- `index.html` — neon homepage
+- `product.html` — one product and two-photo gallery, with quantity discounts
+- `checkout.html` — **order enquiry only**, not a payment checkout
+- `styles.css` — responsive neon dark/light theme
+- `app.js` — basket, pricing, theme preferences and enquiry preparation
+- `config.js` — editable prices and eventual business contact email
+- `assets/` — original user-supplied logo and two product reference images, converted to WebP
 
-This is a development prototype, not a production-ready payment shop.
+## Install on GitHub
+1. Extract the ZIP. Upload **all files and the `assets` folder contents** to the root of your GitHub repository; replace old files of the same names. Do not upload the ZIP directly as the website.
+2. GitHub → Settings → Pages → Deploy from a branch → main → /(root).
+3. Open `https://mhd241.github.io/Nuvotap/` after deployment. Hard-refresh if the old design is cached.
+4. If you connect `nuvotap.com`, configure its DNS separately. Do not overwrite mail MX records.
+
+## Pricing
+Every full pair gets a £10 reduction versus two singles: `floor(quantity / 2) * £30 + (quantity % 2) * £20`. The same formula is applied in the product page, basket, and enquiry summary.
+
+## Important about ordering
+GitHub Pages only serves static files. **There is no real payment processor and no server-side order submission.** The order enquiry form either prepares an email via `mailto:` if `config.js` has a valid contactEmail, or displays copyable enquiry text. It never stores or transmits payment card information. Do not advertise this as an operational paid shop until you have selected and tested a compliant hosted payment provider and arranged any required adult account holder.
+
+To enable mail enquiries once ready, edit the `contactEmail` value in `config.js`, commit and deploy. Test sending from your own device and inbox. Email enquiry is not reliable as a guaranteed delivery service, and it is not a server-side order database.
+
+## Product images
+Both product images were supplied as TIFFs and converted to WebP for fast loading. They illustrate Google review NFC tags but have not been independently verified as final NUVOTAP inventory. The website labels them illustrative. The logo comes from the user's uploaded brand example.
+
+## Pre-launch checklist
+Verify supplier stock and specs, test NFC tags on phones, confirm Google review URLs, publish lawful contact/returns/privacy policies, confirm delivery charges, and configure secure payments only through an approved provider. Never store payment card data in front-end code.
