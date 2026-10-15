@@ -19,3 +19,13 @@ This is a storefront demonstration. No payment processor, stock verification, sh
 
 ## Debugging
 The HTML contains all visible content without JavaScript. JavaScript handles only interactivity. If a browser blocks scripts, product browsing still works.
+
+
+V6.1 SAFARI FIX, 15 Oct 2026
+- Retains V6 look and functionality, separates static homepage rendering from basket initialization.
+- Removes automatic changes to the document's colour mode on load; user toggle remains.
+- Does not render basket/cart HTML until basket is opened or changed.
+- Cache-busts app.js and styles.css using versioned resource URLs.
+- Keeps existing CNAME and .nojekyll files.
+- Note: real card payments and server-side order storage are not connected.
+- Safari behaviour requires verification on the user's machine; the exact original Safari fault was not independently reproduced.

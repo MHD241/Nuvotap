@@ -25,10 +25,12 @@
   try {
     var raw=JSON.parse(localStorage.getItem(STORAGE)||'[]');
     if(Array.isArray(raw)){cart=raw.filter(function(x){return !!products[x.type]&&Number.isInteger(x.qty)&&x.qty>0&&x.qty<=99&&['none','url','profile'].indexOf(x.programming)!==-1}).slice(0,40)}
-    code=localStorage.getItem(PROMO)||'';theme=localStorage.getItem(THEME)||'dark';
+    code=localStorage.getItem(PROMO)||'';
+    // Start in dark mode on every load; only an explicit button click can change theme.
+    // This avoids saved/stale Safari theme state altering the entire page at startup.
   }catch(e){cart=[]}
   function setTheme(){document.documentElement.setAttribute('data-theme',theme==='light'?'light':'dark');if($('#theme-btn'))$('#theme-btn').firstChild.nodeValue=theme==='light'?'☾ ':'☀ '}
-  setTheme();
+  // Do not modify document classes or theme on page load.
   $('#theme-btn')&&$('#theme-btn').addEventListener('click',function(){theme=theme==='light'?'dark':'light';store();setTheme()});
   $('#menu-btn')&&$('#menu-btn').addEventListener('click',function(){var nav=$('#nav');if(!nav)return;var opened=nav.classList.toggle('open');this.setAttribute('aria-expanded',opened?'true':'false')});
   function updateCount(){if($('#cart-count'))$('#cart-count').textContent=String(numberOfCards(cart))}
@@ -105,5 +107,9 @@
     $('#copy-order').addEventListener('click',function(){var self=this;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(body).then(function(){self.textContent='Copied ✓'}).catch(function(){fallback()})}else fallback();function fallback(){var box=$('#order-text');box.select();try{document.execCommand('copy');self.textContent='Copied ✓'}catch(e){self.textContent='Select the text above to copy'}}});
     output.scrollIntoView({behavior:'smooth',block:'center'});
   });
-  refresh();
+  // Initialise only on pages that need dynamic order totals. The static homepage
+  // is never rewritten by JavaScript, so it remains readable if a script fails.
+  try { updateCount(); if ($('#checkout-items')) renderCheckout(); } catch (error) {
+    console.error('NUVOTAP optional basket initialisation failed:', error);
+  }
 })();
