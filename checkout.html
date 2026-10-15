@@ -1,1 +1,147 @@
-<!doctype html><html lang="en" data-theme="dark"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="robots" content="noindex"><title>Order Enquiry | NUVOTAP</title><link rel="stylesheet" href="styles.css"><script defer src="config.js"></script><script defer src="app.js"></script></head><body><div class="aurora"></div><div class="notice"><span class="dot"></span>Secure checkout coming soon · No payment collected on this page</div><header class="header"><div class="header-content"><a class="logo" href="index.html"><img src="assets/nuvotap-logo.webp" alt=""><span>nuvo<em>tap</em></span></a><nav class="nav"><a href="index.html">Home</a><a href="product.html">Shop</a></nav><div class="actions"><button class="icon-btn" data-theme-toggle>☀ <span>Light</span></button><button class="icon-btn" data-open-cart>♧ Basket <span class="count" data-cart-count>0</span></button></div></div></header><main class="container"><div class="breadcrumbs"><a href="product.html">Shop</a> / Order enquiry</div><div class="checkout-layout"><section class="panel"><div class="eyebrow">STEP 1 · REQUEST YOUR TAGS</div><h1>Order enquiry</h1><p class="muted">Please share your order details. This page does not take payments or place a confirmed order. We will confirm availability, delivery, final cost and how to pay separately.</p><form id="order-form"><div class="form-grid"><div class="field"><label for="name">Full name *</label><input id="name" name="name" required maxlength="100" autocomplete="name"></div><div class="field"><label for="email">Email address *</label><input id="email" name="email" type="email" required maxlength="200" autocomplete="email"></div></div><div class="field"><label for="business">Business name *</label><input id="business" name="business" required maxlength="150"></div><div class="field"><label for="reviewLink">Google review page URL (optional)</label><input id="reviewLink" name="reviewLink" type="url" placeholder="https://..." maxlength="600"></div><h3>Delivery address</h3><div class="field"><label for="street">Street address *</label><input id="street" name="street" autocomplete="address-line1" required maxlength="180" placeholder="House number and street"></div><div class="field"><label for="address2">Flat, unit or building (optional)</label><input id="address2" name="address2" autocomplete="address-line2" maxlength="180"></div><div class="form-grid"><div class="field"><label for="town">Town / city *</label><input id="town" name="town" autocomplete="address-level2" required maxlength="100"></div><div class="field"><label for="province">County / region *</label><input id="province" name="province" autocomplete="address-level1" required maxlength="100" placeholder="e.g. Fife"></div></div><div class="form-grid"><div class="field"><label for="postcode">Postcode *</label><input id="postcode" name="postcode" autocomplete="postal-code" required maxlength="12" placeholder="e.g. KY12 7AA"></div><div class="field"><label for="country">Country *</label><select id="country" name="country" autocomplete="country-name" required><option value="United Kingdom" selected>United Kingdom</option></select></div></div><div class="field"><label for="phone">Contact telephone (optional)</label><input id="phone" name="phone" type="tel" autocomplete="tel" maxlength="35"></div><div class="field"><label for="notes">Notes (optional)</label><textarea id="notes" name="notes" rows="4" maxlength="700" placeholder="Let us know what you need"></textarea></div><p class="fineprint">Your details stay in this browser unless you explicitly send them through your email app. Do not share payment card details here.</p><button class="btn primary full" data-submit-enquiry type="submit">Prepare my order enquiry →</button></form><div class="order-result" id="order-result" hidden role="status"></div></section><aside><div class="panel"><h3>Order summary</h3><div data-checkout-summary></div><a data-bulk-checkout class="btn primary full" style="margin-top:12px" hidden href="mailto:hello@nuvotap.com">Email hello@nuvotap.com for 11+ tags ↗</a><p class="fineprint">11 or more tags? Please contact us for a personalised quote instead of this form.</p><a class="btn secondary full" style="margin-top:15px" href="product.html">← Edit quantity</a></div><p class="fineprint">Payment integration is not active. A parent or guardian should arrange any payment-provider account where required.</p></aside></div></main><footer class="footer"><div class="container footer-row">© NUVOTAP <span>No card details accepted · No payment taken</span></div></footer><dialog class="cart-dialog" id="cart-dialog"><div class="cart-head"><h2>Your basket</h2><button class="icon-btn" data-close-cart>✕</button></div><div class="cart-body" data-cart-content></div></dialog></body></html>
+<!doctype html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Complete your NUVOTAP order enquiry. Enter delivery details, optional business details and apply WELCOME10.">
+  <title>Checkout | NUVOTAP</title>
+  <link rel="stylesheet" href="styles.css">
+  <script defer src="config.js"></script>
+  <script defer src="app.js"></script>
+</head>
+<body>
+  <div class="aurora"></div>
+  <div class="notice"><span class="dot"></span>Checkout preview · Use WELCOME10 · Business name optional</div>
+
+  <header class="header">
+    <div class="header-content">
+      <a class="logo large" href="index.html" aria-label="NUVOTAP homepage">
+        <img src="assets/nuvotap-logo.webp" alt="NUVOTAP logo">
+        <span>nuvo<em>tap</em></span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="index.html">Home</a>
+        <a href="product.html">Product</a>
+        <a href="index.html#how">How it works</a>
+        <a href="index.html#benefits">Benefits</a>
+        <a href="index.html#faq">FAQ</a>
+      </nav>
+      <div class="actions">
+        <button class="icon-btn" data-theme-toggle type="button">☀ <span>Light</span></button>
+        <button class="icon-btn" data-open-cart type="button">Basket <span class="count" data-cart-count>0</span></button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container">
+    <div class="breadcrumbs"><a href="index.html">Home</a> / Checkout</div>
+
+    <section class="checkout-layout cleaner-layout">
+      <div class="panel">
+        <span class="eyebrow">YOUR ORDER DETAILS</span>
+        <h1>Checkout enquiry</h1>
+        <p class="section-lead">Complete your contact and delivery details below. We’ll prepare an enquiry email; no card payment is taken on the site yet.</p>
+
+        <form id="order-form" novalidate>
+          <div class="form-grid">
+            <div class="field">
+              <label for="name">Full name</label>
+              <input id="name" name="name" autocomplete="name" required>
+            </div>
+            <div class="field">
+              <label for="email">Email address</label>
+              <input id="email" name="email" type="email" autocomplete="email" required>
+            </div>
+            <div class="field">
+              <label for="business">Business name <span class="optional">(optional)</span></label>
+              <input id="business" name="business" autocomplete="organization">
+            </div>
+            <div class="field">
+              <label for="phone">Telephone number <span class="optional">(optional)</span></label>
+              <input id="phone" name="phone" autocomplete="tel">
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="reviewLink">Google review link <span class="optional">(optional for now)</span></label>
+            <input id="reviewLink" name="reviewLink" type="url" placeholder="https://..." inputmode="url">
+          </div>
+
+          <div class="field">
+            <label for="street">Street address</label>
+            <input id="street" name="street" autocomplete="address-line1" required>
+          </div>
+
+          <div class="field">
+            <label for="address2">Address line 2 <span class="optional">(optional)</span></label>
+            <input id="address2" name="address2" autocomplete="address-line2">
+          </div>
+
+          <div class="form-grid">
+            <div class="field">
+              <label for="town">Town / city</label>
+              <input id="town" name="town" autocomplete="address-level2" required>
+            </div>
+            <div class="field">
+              <label for="province">Province / county / region</label>
+              <input id="province" name="province" autocomplete="address-level1" required>
+            </div>
+            <div class="field">
+              <label for="postcode">Post code</label>
+              <input id="postcode" name="postcode" autocomplete="postal-code" required>
+            </div>
+            <div class="field">
+              <label for="country">Country</label>
+              <input id="country" name="country" autocomplete="country-name" value="United Kingdom" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="notes">Notes <span class="optional">(optional)</span></label>
+            <textarea id="notes" name="notes" rows="5" placeholder="Anything else we should know about your order?"></textarea>
+          </div>
+
+          <div class="checkout-actions">
+            <button type="submit" class="btn primary" data-submit-enquiry>Prepare order enquiry</button>
+            <a class="btn secondary" data-bulk-checkout hidden href="hello@nuvotap.com">Email for 11+ tags</a>
+          </div>
+        </form>
+
+        <div id="order-result" class="order-result" hidden></div>
+      </div>
+
+      <aside class="panel sticky-summary">
+        <span class="eyebrow">ORDER SUMMARY</span>
+        <h2>Your basket</h2>
+        <div data-checkout-summary></div>
+
+        <div class="promo-box">
+          <label for="promo-code">Discount code</label>
+          <div class="promo-row">
+            <input id="promo-code" type="text" placeholder="Enter code" data-promo-input autocomplete="off">
+            <button type="button" class="btn secondary mini" data-apply-promo>Apply</button>
+          </div>
+          <p class="fineprint" data-promo-message>Use code <strong>WELCOME10</strong> for 10% off.</p>
+        </div>
+
+        <p class="fineprint">No online payment is taken yet. Shipping and payment are confirmed after your enquiry.</p>
+      </aside>
+    </section>
+  </main>
+
+  <footer class="footer">
+    <div class="container footer-row">
+      <div>© NUVOTAP · NFC review tools for small businesses</div>
+      <div>Illustrative product imagery · Payments not yet enabled</div>
+    </div>
+  </footer>
+
+  <dialog class="cart-dialog" id="cart-dialog" aria-label="Your basket">
+    <div class="cart-head">
+      <h2>Your basket</h2>
+      <button class="icon-btn" data-close-cart aria-label="Close basket">✕</button>
+    </div>
+    <div class="cart-body" data-cart-content></div>
+  </dialog>
+</body>
+</html>
