@@ -1,8 +1,7 @@
 window.NUVOTAP_CONFIG = {
-  contactEmail: '', // Set your actual email once activated; e.g. hello@nuvotap.com
+  contactEmail: 'hello@nuvotap.com', // Email enquiries open the visitor's email app; not automatically sent.
   brandName: 'NUVOTAP',
   currency: 'GBP',
   singlePrice: 20,
-  pairPrice: 30,
-  // Every pair costs £30; any unpaired card costs £20. Examples: 1 £20; 2 £30; 3 £50; 4 £60.
+  // 1: £20, 2: 10% off, 3: 15% off, 4–10: 20% off. Over 10: email for a custom quote.
 };
