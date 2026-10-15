@@ -1,59 +1,109 @@
-(()=>{'use strict';
-const $$=(q,root=document)=>[...root.querySelectorAll(q)],$=(q,root=document)=>root.querySelector(q);
-const GBP=n=>new Intl.NumberFormat('en-GB',{style:'currency',currency:'GBP'}).format(n);
-const catalog={white:{name:'White Google Review Card',price:20,image:'assets/product-1.webp'},black:{name:'Black Google Review Card',price:20,image:'assets/product-black.webp'},blank:{name:'Blank NFC Card',price:null,image:'assets/blank-stack.png'}};
-const KEY='nuvotap-v5-cart',PROMO='nuvotap-v5-discount',THEME='nuvotap-theme',EMAIL='hello@nuvotap.com';
-let cart=[],code='',theme='dark';
-try{const c=JSON.parse(localStorage.getItem(KEY)||'[]');if(Array.isArray(c))cart=c.filter(x=>catalog[x.type]&&Number.isInteger(x.qty)&&x.qty>0&&x.qty<=99).slice(0,40).map(x=>({...x,qty:x.qty}));code=localStorage.getItem(PROMO)||'';theme=localStorage.getItem(THEME)||'dark'}catch{}
-const save=()=>{try{localStorage.setItem(KEY,JSON.stringify(cart));localStorage.setItem(PROMO,code);localStorage.setItem(THEME,theme)}catch{}};
-const esc=s=>String(s||'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
-const safeQty=q=>Math.max(1,Math.min(99,Math.floor(Number(q)||1)));
-const totalQty=()=>cart.reduce((s,x)=>s+x.qty,0);
-const rate=q=>q>=4?.2:q===3?.15:q===2?.1:0;
-const promoOn=()=>code.trim().toUpperCase()==='WELCOME10';
-function calc(lines=cart,discount=promoOn()){
- const qty=lines.reduce((s,x)=>s+x.qty,0),priced=lines.filter(x=>catalog[x.type].price!==null);
- const reviewQty=priced.reduce((s,x)=>s+x.qty,0);
- const base=priced.reduce((s,x)=>s+catalog[x.type].price*x.qty,0);
- const qtyOff=Math.round(base*rate(reviewQty)*100)/100;
- const promoOff=discount?Math.round((base-qtyOff)*.1*100)/100:0;
- const programCount=lines.reduce((s,x)=>s+(x.programming==='none'?0:x.qty),0);
- const fees=programCount*.5;
- // A profile is charged once per unique profile request/cart item, not per NFC card.
- const profiles=lines.filter(x=>x.newProfile).length;
- const profileFees=profiles*5;
- const quote=lines.some(x=>catalog[x.type].price===null)||qty>10;
- return {qty,base,qtyOff,promoOff,fees,profileFees,knownTotal:Math.max(0,base-qtyOff-promoOff+fees+profileFees),quote};
-}
-function applyTheme(){document.documentElement.dataset.theme=theme==='light'?'light':'dark';$$('[data-theme]').forEach(x=>{x.textContent=theme==='light'?'☾':'☀';x.setAttribute('aria-label',theme==='light'?'Switch to dark mode':'Switch to light mode')})}
-applyTheme();$$('[data-theme]').forEach(el=>el.addEventListener('click',()=>{theme=theme==='dark'?'light':'dark';save();applyTheme()}));
-$('[data-menu]')?.addEventListener('click',e=>{const nav=$('#main-nav');const isOpen=nav?.classList.toggle('show');e.currentTarget.setAttribute('aria-expanded',String(!!isOpen))});
-const dialog=$('#cart');$$('[data-cart-open]').forEach(x=>x.addEventListener('click',()=>{renderCart();dialog?.showModal()}));$('[data-cart-close]')?.addEventListener('click',()=>dialog?.close());dialog?.addEventListener('click',e=>{if(e.target===dialog)dialog.close()});
-function summaryRows(c){return `<div class="sum-line"><span>Card subtotal</span><b>${GBP(c.base)}</b></div><div class="sum-line"><span>Quantity saving</span><b>−${GBP(c.qtyOff)}</b></div><div class="sum-line"><span>Code saving</span><b>−${GBP(c.promoOff)}</b></div><div class="sum-line"><span>Programming</span><b>${GBP(c.fees)}</b></div><div class="sum-line"><span>New profiles</span><b>${GBP(c.profileFees)}</b></div><div class="sum-total"><span>${c.quote?'Known-cost estimate':'Products subtotal'}</span><b>${GBP(c.knownTotal)}${c.quote?' + quote':''}</b></div>`}
-function renderCart(){const out=$('#cart-content');if(!out)return;out.innerHTML=cart.length?cart.map((x,i)=>`<div class="basket-item"><img src="${catalog[x.type].image}" alt=""><div><strong>${catalog[x.type].name}</strong><p>${x.qty} card(s) · ${x.programming==='none'?'Unprogrammed':x.lock==='locked'?'Programmed · Permanently locked':'Programmed · Unlocked'}${x.newProfile?' · New profile':''}</p><div class="basket-control"><button data-cminus="${i}" aria-label="Decrease quantity">−</button><span>${x.qty}</span><button data-cplus="${i}" aria-label="Increase quantity">+</button><button class="remove" data-remove="${i}" aria-label="Remove item">Remove</button></div></div></div>`).join('')+`<div class="basket-summary">${summaryRows(calc())}<p class="muted small">Prices excluding shipping; blank-card prices are quoted separately.</p><a class="btn primary wide" href="checkout.html">Continue to enquiry →</a></div>`:'<div class="cart-empty"><h3>Nothing in your basket yet.</h3><p>Explore our NFC card collection.</p><a class="btn primary" href="index.html#collection">Shop cards ↗</a></div>';
- $$('[data-remove]',out).forEach(b=>b.addEventListener('click',()=>{cart.splice(Number(b.dataset.remove),1);save();sync()}));
- $$('[data-cminus]',out).forEach(b=>b.addEventListener('click',()=>{let i=Number(b.dataset.cminus);cart[i].qty--;if(cart[i].qty<1)cart.splice(i,1);save();sync()}));
- $$('[data-cplus]',out).forEach(b=>b.addEventListener('click',()=>{let i=Number(b.dataset.cplus);if(totalQty()>=99)return;cart[i].qty++;save();sync()}));
-}
-function sync(){ $$('[data-cart-count]').forEach(x=>x.textContent=totalQty());renderCart();renderCheckout() }
-const form=$('#product-form');
-if(form){const type=$('[data-product]')?.dataset.product;const quantity=$('#quantity'),pr=$('#programming'),url=$('#url-field'),lock=$('#lock-field'),profile=$('#new-profile'),pf=$('#profile-fields'),dest=$('#destination');
- function update(){let v=pr.value;url.hidden=v!=='url';lock.hidden=v==='none';pf.hidden=!profile.checked;dest.required=v==='url';const q=safeQty(quantity.value),hasProfile=profile.checked;const tmp=[{type,qty:q,programming:v,lock:$('#lock')?.value||'unlocked',newProfile:hasProfile}];const c=calc(tmp,false);$('#product-estimate').innerHTML=`<span>${q>10?'Custom quote for 11+':'Estimated item total'}</span><strong>${c.quote?'Request quote':GBP(c.knownTotal)}</strong><small>${c.quote?'Known extras: '+GBP(c.fees+c.profileFees)+'. Final amount depends on card price and shipping.':'Discounts automatically applied by quantity. Delivery quoted separately.'}</small>`;}
- $('[data-minus]')?.addEventListener('click',()=>{quantity.value=Math.max(1,safeQty(quantity.value)-1);update()});$('[data-plus]')?.addEventListener('click',()=>{quantity.value=Math.min(99,safeQty(quantity.value)+1);update()});['input','change'].forEach(ev=>form.addEventListener(ev,update));pr.addEventListener('change',()=>{if(pr.value==='profile')profile.checked=true;update()});
- form.addEventListener('submit',e=>{e.preventDefault();if(!form.reportValidity())return;const q=safeQty(quantity.value),v=pr.value,np=profile.checked;
- if(v==='profile'&&!np){alert('Select a new digital profile or choose an existing profile URL.');return;}
- if(np){if(!$('#profile-name').value.trim()||!$('#social-url').value.trim()||!($('#profile-email').value.trim()||$('#profile-phone').value.trim())){alert('For a new digital profile, enter a name, a social link, and at least one contact method (email or phone).');return;}if(!$('#social-url').checkValidity()||!$('#profile-email').checkValidity()){form.reportValidity();return;}}
- const data=new FormData(form);let item={type,qty:q,programming:v,lock:v==='none'?'none':data.get('lock'),destination:v==='url'?String(data.get('destination')||''):'',newProfile:np,profile:np?{name:String(data.get('profileName')||''),social:String(data.get('socialUrl')||''),email:String(data.get('profileEmail')||''),phone:String(data.get('profilePhone')||''),business:String(data.get('profileBusiness')||''),description:String(data.get('profileDescription')||'')}:null};
- if(totalQty()+q>99){alert('For large quantities please email hello@nuvotap.com.');return;}cart.push(item);save();sync();dialog?.showModal();});update();}
-function renderCheckout(){const items=$('#checkout-items'),prices=$('#checkout-prices');if(!items||!prices)return;items.innerHTML=cart.length?cart.map(x=>`<div class="checkout-item"><img src="${catalog[x.type].image}" alt=""><div><b>${catalog[x.type].name}</b><p>${x.qty} × ${x.programming==='none'?'Blank / no programming':x.lock==='locked'?'Programmed · locked':'Programmed · unlocked'}${x.newProfile?' · New profile':''}</p></div></div>`).join(''):'<p>Your basket is empty. <a href="index.html#collection">Shop cards ↗</a></p>';
- prices.innerHTML=cart.length?summaryRows(calc()):'';const button=$('#checkout-form button[type=submit]');if(button)button.disabled=!cart.length;const msg=$('#coupon-message');if(msg)msg.textContent=promoOn()?'Code applied.':code?'This code is not valid.':'';
-}
-$('#coupon-apply')?.addEventListener('click',()=>{code=String($('#coupon').value||'').trim().toUpperCase();save();renderCheckout()});
-$('#coupon')?.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();$('#coupon-apply').click()}});
-const checkForm=$('#checkout-form');checkForm?.addEventListener('submit',e=>{e.preventDefault();if(!cart.length||!checkForm.reportValidity())return;
- const d=Object.fromEntries(new FormData(checkForm).entries()),c=calc();const lines=[`NUVOTAP ORDER ENQUIRY`, ``, ...cart.flatMap((x,i)=>[`Item ${i+1}: ${catalog[x.type].name}`,`Quantity: ${x.qty}`,`Programming: ${x.programming}`,`Lock: ${x.lock}`,`Destination URL: ${x.destination||'N/A'}`,`New digital profile: ${x.newProfile?'Yes':'No'}`,...(x.profile?[`Profile name: ${x.profile.name}`,`Social link: ${x.profile.social}`,`Profile email: ${x.profile.email}`,`Profile phone: ${x.profile.phone}`,`Profile business: ${x.profile.business}`,`Profile description: ${x.profile.description}`]:[]),``]),`Card subtotal: ${GBP(c.base)}`,`Quantity discount: -${GBP(c.qtyOff)}`,`Promo saving: -${GBP(c.promoOff)}`,`Programming fees: ${GBP(c.fees)}`,`Digital profile fees: ${GBP(c.profileFees)}`,`Known-cost estimate: ${GBP(c.knownTotal)}`,`Custom quote required: ${c.quote?'YES':'No'}`,`Delivery and hosting/edit conditions: to confirm`,``,`Name: ${d.name}`,`Email: ${d.email}`,`Business name: ${d.business||''}`,`Telephone: ${d.phone||''}`,`Address: ${d.street}`,`Address line 2: ${d.address2||''}`,`Town: ${d.town}`,`County/Region: ${d.province}`,`Postcode: ${d.postcode}`,`Country: ${d.country}`,`Notes: ${d.notes||''}`,``,`No payment has been taken. Please reply with final quotation and arrangements.`];const body=lines.join('\n');const href=`mailto:${EMAIL}?subject=${encodeURIComponent('NUVOTAP order enquiry')}&body=${encodeURIComponent(body)}`;
- const output=$('#order-output');output.hidden=false;output.innerHTML='<h3>Enquiry ready to send</h3><p>Your email app will open when you click below. No order has been submitted yet.</p><a class="btn primary" id="mailto-send" href="'+esc(href)+'">Open email app ↗</a><p class="muted small">If your email app does not open, copy the details instead.</p><textarea rows="9" readonly aria-label="Order details">'+esc(body)+'</textarea><button type="button" class="btn ghost" id="copy-enquiry">Copy order details</button>';
- $('#copy-enquiry').addEventListener('click',async()=>{try{await navigator.clipboard.writeText(body);$('#copy-enquiry').textContent='Copied ✓'}catch{$('#order-output textarea').select();document.execCommand('copy')}});output.scrollIntoView({behavior:'smooth'});
- });
-sync();
+/* NUVOTAP V6: progressive enhancement only. All site content remains visible without JS. */
+(function () {
+  'use strict';
+  var prices = {white:20, black:20, blank:null};
+  var products = {white:'White Google Review Card',black:'Black Google Review Card',blank:'Blank NFC Card'};
+  var images = {white:'assets/product-1.webp',black:'assets/product-black.webp',blank:'assets/blank-stack.png'};
+  var STORAGE = 'nuvotap-v6-basket', PROMO='nuvotap-v6-code', THEME='nuvotap-theme';
+  var cart = [], code = '', theme='dark';
+  var $ = function(selector,root){return (root||document).querySelector(selector)};
+  var $$ = function(selector,root){return Array.prototype.slice.call((root||document).querySelectorAll(selector))};
+  function money(x){return '£'+Number(x).toFixed(2)}
+  function clean(s){return String(s==null?'':s).replace(/[&<>"']/g,function(k){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[k]})}
+  function quantity(x){return Math.max(1,Math.min(99,Math.floor(Number(x)||1)))}
+  function numberOfCards(lines){return lines.reduce(function(s,x){return s+x.qty},0)}
+  function rate(q){if(q>=4&&q<=10)return .20;if(q===3)return .15;if(q===2)return .10;return 0}
+  function promoActive(){return code.toUpperCase()==='WELCOME10'}
+  function totals(lines){
+    var known=0,reviewCount=0,programming=0,profiles=0;
+    lines.forEach(function(x){if(prices[x.type]!==null){known+=prices[x.type]*x.qty;reviewCount+=x.qty}if(x.programming!=='none')programming+=x.qty*.5;if(x.newProfile)profiles+=5});
+    var reduction=Math.round(known*rate(reviewCount)*100)/100;
+    var coupon=promoActive()?Math.round((known-reduction)*.10*100)/100:0;
+    return {base:known,quantityOff:reduction,coupon:coupon,programming:programming,profiles:profiles,total:Math.round((known-reduction-coupon+programming+profiles)*100)/100,quote:lines.some(function(x){return x.type==='blank'})||numberOfCards(lines)>10};
+  }
+  function store(){try{localStorage.setItem(STORAGE,JSON.stringify(cart));localStorage.setItem(PROMO,code);localStorage.setItem(THEME,theme)}catch(e){}}
+  try {
+    var raw=JSON.parse(localStorage.getItem(STORAGE)||'[]');
+    if(Array.isArray(raw)){cart=raw.filter(function(x){return !!products[x.type]&&Number.isInteger(x.qty)&&x.qty>0&&x.qty<=99&&['none','url','profile'].indexOf(x.programming)!==-1}).slice(0,40)}
+    code=localStorage.getItem(PROMO)||'';theme=localStorage.getItem(THEME)||'dark';
+  }catch(e){cart=[]}
+  function setTheme(){document.documentElement.setAttribute('data-theme',theme==='light'?'light':'dark');if($('#theme-btn'))$('#theme-btn').firstChild.nodeValue=theme==='light'?'☾ ':'☀ '}
+  setTheme();
+  $('#theme-btn')&&$('#theme-btn').addEventListener('click',function(){theme=theme==='light'?'dark':'light';store();setTheme()});
+  $('#menu-btn')&&$('#menu-btn').addEventListener('click',function(){var nav=$('#nav');if(!nav)return;var opened=nav.classList.toggle('open');this.setAttribute('aria-expanded',opened?'true':'false')});
+  function updateCount(){if($('#cart-count'))$('#cart-count').textContent=String(numberOfCards(cart))}
+  var dialog=$('#cart-dialog');
+  function openCart(){renderCart();if(dialog){if(typeof dialog.showModal==='function'){try{dialog.showModal()}catch(e){dialog.setAttribute('open','')}}else{dialog.setAttribute('open','')}}}
+  $('#cart-open')&&$('#cart-open').addEventListener('click',openCart);
+  $('#cart-close')&&$('#cart-close').addEventListener('click',function(){if(dialog){if(typeof dialog.close==='function')dialog.close();else dialog.removeAttribute('open')}});
+  if(dialog)dialog.addEventListener('click',function(e){if(e.target===dialog&&typeof dialog.close==='function')dialog.close()});
+  function summaryRows(t){return '<div class="sum-row"><span>Card subtotal</span><b>'+money(t.base)+'</b></div>'+
+    '<div class="sum-row"><span>Quantity saving</span><b>−'+money(t.quantityOff)+'</b></div>'+
+    '<div class="sum-row"><span>Discount code saving</span><b>−'+money(t.coupon)+'</b></div>'+
+    '<div class="sum-row"><span>Programming</span><b>'+money(t.programming)+'</b></div>'+
+    '<div class="sum-row"><span>Profile creation</span><b>'+money(t.profiles)+'</b></div>'+
+    '<div class="sum-row total"><span>'+(t.quote?'Known charges (partial)':'Product subtotal')+'</span><b>'+money(t.total)+(t.quote?' + quote':'')+'</b></div>';
+  }
+  function renderCart(){
+    var out=$('#cart-items');if(!out)return;
+    if(!cart.length){out.innerHTML='<h3>Your basket is empty.</h3><p class="muted">Choose one of our NFC cards.</p><a class="btn primary" href="index.html#collection">Explore products ↗</a>';return}
+    out.innerHTML=cart.map(function(x,i){return '<div class="basket-item"><img src="'+images[x.type]+'" alt=""><div><strong>'+products[x.type]+'</strong><p>'+x.qty+' card(s) · '+(x.programming==='none'?'Unprogrammed':x.lock==='locked'?'Programmed · locked':'Programmed · unlocked')+(x.newProfile?' · Digital profile':'')+'</p><div class="basket-buttons"><button type="button" data-action="minus" data-index="'+i+'">−</button><span>'+x.qty+'</span><button type="button" data-action="plus" data-index="'+i+'">+</button><button type="button" class="remove" data-action="remove" data-index="'+i+'">Remove</button></div></div></div>'}).join('')+'<div class="basket-summary">'+summaryRows(totals(cart))+'<p class="notice-inline">Final delivery charges and any quote are confirmed separately.</p><a class="btn primary wide" href="checkout.html">Continue to enquiry →</a></div>';
+    $$('[data-action]',out).forEach(function(b){b.addEventListener('click',function(){var i=Number(b.getAttribute('data-index')),action=b.getAttribute('data-action');if(!cart[i])return;if(action==='remove')cart.splice(i,1);if(action==='minus'){cart[i].qty--;if(cart[i].qty===0)cart.splice(i,1)}if(action==='plus'&&numberOfCards(cart)<99)cart[i].qty++;store();refresh()})});
+  }
+  function refresh(){updateCount();renderCart();renderCheckout()}
+  var productSection=$('[data-product]'), form=$('#product-form');
+  if(form && productSection){
+    var type=productSection.getAttribute('data-product');
+    var q=$('#quantity'),p=$('#programming'),dest=$('#destination'),urlBox=$('#destination-box'),lockBox=$('#lock-box'),np=$('#new-profile'),profileBox=$('#profile-fields');
+    function updateProduct(){
+      var mode=p.value, profileOn=np.checked;
+      urlBox.hidden=mode!=='url';lockBox.hidden=mode==='none';profileBox.hidden=!profileOn;
+      dest.required=mode==='url';
+      ['#profile-name','#social-url'].forEach(function(selector){var input=$(selector);if(input)input.required=profileOn});
+      var count=quantity(q.value);
+      var sample={type:type,qty:count,programming:mode,newProfile:profileOn};
+      var calc=totals([sample]);
+      $('#product-estimate').innerHTML= '<span class="small muted">'+(calc.quote?'Estimate / custom quote':'Estimated product total')+'</span><strong>'+(calc.quote?'Request quote':money(calc.total))+'</strong><small>'+(calc.quote?'Known fees: '+money(calc.programming+calc.profiles)+'. Card base price and/or bulk pricing to be confirmed.':'Before delivery charges. Discounts, if applicable, calculated automatically.')+'</small>';
+    }
+    $('#minus').addEventListener('click',function(){q.value=Math.max(1,quantity(q.value)-1);updateProduct()});
+    $('#plus').addEventListener('click',function(){q.value=Math.min(99,quantity(q.value)+1);updateProduct()});
+    p.addEventListener('change',function(){if(p.value==='profile')np.checked=true;updateProduct()});
+    np.addEventListener('change',function(){if(!np.checked&&p.value==='profile')p.value='none';updateProduct()});
+    q.addEventListener('input',updateProduct);
+    form.addEventListener('submit',function(e){
+      e.preventDefault();updateProduct();if(!form.reportValidity())return;
+      var qty=quantity(q.value),mode=p.value,profileOn=np.checked;
+      if(mode==='profile'&&!profileOn){alert('To programme a new profile, choose profile creation.');return}
+      if(profileOn && !(($('#profile-email').value||'').trim()||($('#profile-phone').value||'').trim())){alert('Enter a profile email address or phone number.');return}
+      if(numberOfCards(cart)+qty>99){alert('Please email hello@nuvotap.com for large orders.');return}
+      var details={type:type,qty:qty,programming:mode,lock:mode==='none'?'none':$('#lock').value,destination:mode==='url'?dest.value.trim():'',newProfile:profileOn,profile:profileOn?{name:$('#profile-name').value.trim(),social:$('#social-url').value.trim(),email:$('#profile-email').value.trim(),phone:$('#profile-phone').value.trim(),business:$('#profile-business').value.trim(),description:$('#profile-description').value.trim()}:null};
+      cart.push(details);store();refresh();openCart();
+    });
+    updateProduct();
+  }
+  function renderCheckout(){
+    var items=$('#checkout-items'),pricesBox=$('#checkout-prices');if(!items||!pricesBox)return;
+    if(!cart.length){items.innerHTML='<p>Your basket is empty. <a href="index.html#collection">Choose a product ↗</a></p>';pricesBox.textContent=''}
+    else {items.innerHTML=cart.map(function(x){return '<div class="summary-item"><img src="'+images[x.type]+'" alt=""><div><strong>'+products[x.type]+'</strong><p>'+x.qty+' × '+(x.programming==='none'?'No programming':x.lock==='locked'?'Programmed (locked)':'Programmed (unlocked)')+(x.newProfile?' · New profile':'')+'</p></div></div>'}).join('');pricesBox.innerHTML=summaryRows(totals(cart))}
+    if($('#prepare-order'))$('#prepare-order').disabled=!cart.length;
+    if($('#coupon-message'))$('#coupon-message').textContent=promoActive()?'Code applied.':code?'Code not recognised.':'';
+    if($('#coupon'))$('#coupon').value=code;
+  }
+  $('#coupon-apply')&&$('#coupon-apply').addEventListener('click',function(){code=($('#coupon').value||'').trim().toUpperCase();store();renderCheckout()});
+  $('#coupon')&&$('#coupon').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();$('#coupon-apply').click()}});
+  var check=$('#checkout-form');
+  if(check)check.addEventListener('submit',function(e){
+    e.preventDefault();if(!cart.length||!check.reportValidity())return;
+    var d=Object.fromEntries(new FormData(check).entries()),t=totals(cart);
+    var parts=['NUVOTAP ORDER ENQUIRY',''];
+    cart.forEach(function(x,i){parts.push('ITEM '+(i+1)+' — '+products[x.type],'Quantity: '+x.qty,'Programming: '+x.programming,'Write protection: '+x.lock,'URL: '+(x.destination||'Not provided'),'New profile: '+(x.newProfile?'Yes':'No'));if(x.profile){parts.push('Profile name: '+x.profile.name,'Social: '+x.profile.social,'Email: '+x.profile.email,'Phone: '+x.profile.phone,'Business: '+x.profile.business,'Description: '+x.profile.description)}parts.push('')});
+    parts.push('Card subtotal: '+money(t.base),'Quantity saving: '+money(t.quantityOff),'Private code saving: '+money(t.coupon),'Programming: '+money(t.programming),'New profiles: '+money(t.profiles),'Known charges: '+money(t.total),'Custom quote needed: '+(t.quote?'Yes':'No'),'Delivery, profile hosting and final payment: to be confirmed','', 'Full name: '+d.name,'Email: '+d.email,'Business name: '+(d.business||''),'Phone: '+(d.phone||''),'Street: '+d.street,'Address line 2: '+(d.address2||''),'Town/city: '+d.town,'Region: '+(d.region||''),'Postcode: '+d.postcode,'Country: '+d.country,'Notes: '+(d.notes||''));
+    var body=parts.join('\n');
+    var emailLink='mailto:hello@nuvotap.com?subject='+encodeURIComponent('NUVOTAP order enquiry')+'&body='+encodeURIComponent(body);
+    var output=$('#order-output');output.hidden=false;
+    output.innerHTML='<h3>Enquiry prepared</h3><p>Choose the button to open your email app, then send the message yourself. No order has been submitted automatically.</p><a class="btn primary" id="email-order" href="'+clean(emailLink)+'">Open email ↗</a><p class="small muted">Or copy the information below:</p><textarea id="order-text" rows="11" readonly>'+clean(body)+'</textarea><button type="button" class="btn secondary" id="copy-order">Copy details</button>';
+    $('#copy-order').addEventListener('click',function(){var self=this;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(body).then(function(){self.textContent='Copied ✓'}).catch(function(){fallback()})}else fallback();function fallback(){var box=$('#order-text');box.select();try{document.execCommand('copy');self.textContent='Copied ✓'}catch(e){self.textContent='Select the text above to copy'}}});
+    output.scrollIntoView({behavior:'smooth',block:'center'});
+  });
+  refresh();
 })();
