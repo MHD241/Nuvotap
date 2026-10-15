@@ -1,10 +1,10 @@
 /* NUVOTAP V6: progressive enhancement only. All site content remains visible without JS. */
 (function () {
   'use strict';
-  var prices = {white:20, black:20, blank:null};
+  var prices = {white:19.99, black:19.99, blank:7};
   var products = {white:'White Google Review Card',black:'Black Google Review Card',blank:'Blank NFC Card'};
   var images = {white:'assets/product-1.webp',black:'assets/product-black.webp',blank:'assets/blank-stack.png'};
-  var STORAGE = 'nuvotap-v6-basket', PROMO='nuvotap-v6-code', THEME='nuvotap-theme';
+  var STORAGE = 'nuvotap-v7-basket', PROMO='nuvotap-v7-code', THEME='nuvotap-theme';
   var cart = [], code = '', theme='dark';
   var $ = function(selector,root){return (root||document).querySelector(selector)};
   var $$ = function(selector,root){return Array.prototype.slice.call((root||document).querySelectorAll(selector))};
@@ -16,10 +16,10 @@
   function promoActive(){return code.toUpperCase()==='WELCOME10'}
   function totals(lines){
     var known=0,reviewCount=0,programming=0,profiles=0;
-    lines.forEach(function(x){if(prices[x.type]!==null){known+=prices[x.type]*x.qty;reviewCount+=x.qty}if(x.programming!=='none')programming+=x.qty*.5;if(x.newProfile)profiles+=5});
-    var reduction=Math.round(known*rate(reviewCount)*100)/100;
+    lines.forEach(function(x){known+=prices[x.type]*x.qty;if(x.type==='white'||x.type==='black')reviewCount+=x.qty;if(x.programming==='url')programming+=x.qty*.5;if(x.newProfile&&x.type==='blank')profiles+=5});
+    var reviewSubtotal=lines.reduce(function(s,x){return s+((x.type==='white'||x.type==='black')?prices[x.type]*x.qty:0)},0);var reduction=Math.round(reviewSubtotal*rate(reviewCount)*100)/100;
     var coupon=promoActive()?Math.round((known-reduction)*.10*100)/100:0;
-    return {base:known,quantityOff:reduction,coupon:coupon,programming:programming,profiles:profiles,total:Math.round((known-reduction-coupon+programming+profiles)*100)/100,quote:lines.some(function(x){return x.type==='blank'})||numberOfCards(lines)>10};
+    return {base:known,quantityOff:reduction,coupon:coupon,programming:programming,profiles:profiles,total:Math.round((known-reduction-coupon+programming+profiles)*100)/100,quote:numberOfCards(lines)>10};
   }
   function store(){try{localStorage.setItem(STORAGE,JSON.stringify(cart));localStorage.setItem(PROMO,code);localStorage.setItem(THEME,theme)}catch(e){}}
   try {
@@ -58,27 +58,28 @@
     var type=productSection.getAttribute('data-product');
     var q=$('#quantity'),p=$('#programming'),dest=$('#destination'),urlBox=$('#destination-box'),lockBox=$('#lock-box'),np=$('#new-profile'),profileBox=$('#profile-fields');
     function updateProduct(){
-      var mode=p.value, profileOn=np.checked;
-      urlBox.hidden=mode!=='url';lockBox.hidden=mode==='none';profileBox.hidden=!profileOn;
+      var mode=p.value, profileOn=!!(np&&np.checked);
+      urlBox.hidden=mode!=='url';lockBox.hidden=mode==='none';if(profileBox)profileBox.hidden=!profileOn;
       dest.required=mode==='url';
-      ['#profile-name','#social-url'].forEach(function(selector){var input=$(selector);if(input)input.required=profileOn});
+      
       var count=quantity(q.value);
       var sample={type:type,qty:count,programming:mode,newProfile:profileOn};
       var calc=totals([sample]);
-      $('#product-estimate').innerHTML= '<span class="small muted">'+(calc.quote?'Estimate / custom quote':'Estimated product total')+'</span><strong>'+(calc.quote?'Request quote':money(calc.total))+'</strong><small>'+(calc.quote?'Known fees: '+money(calc.programming+calc.profiles)+'. Card base price and/or bulk pricing to be confirmed.':'Before delivery charges. Discounts, if applicable, calculated automatically.')+'</small>';
+      $('#product-estimate').innerHTML= '<span class="small muted">Estimated product total</span><strong>'+money(calc.total)+(calc.quote?' + bulk quote':'')+'</strong><small>Before delivery charges. Volume discounts apply to Google review cards only.</small>';
     }
     $('#minus').addEventListener('click',function(){q.value=Math.max(1,quantity(q.value)-1);updateProduct()});
     $('#plus').addEventListener('click',function(){q.value=Math.min(99,quantity(q.value)+1);updateProduct()});
-    p.addEventListener('change',function(){if(p.value==='profile')np.checked=true;updateProduct()});
-    np.addEventListener('change',function(){if(!np.checked&&p.value==='profile')p.value='none';updateProduct()});
+    p.addEventListener('change',function(){if(np&&p.value==='profile')np.checked=true;updateProduct()});
+    if(np)np.addEventListener('change',function(){if(!np.checked&&p.value==='profile')p.value='none';updateProduct()});
     q.addEventListener('input',updateProduct);
     form.addEventListener('submit',function(e){
       e.preventDefault();updateProduct();if(!form.reportValidity())return;
-      var qty=quantity(q.value),mode=p.value,profileOn=np.checked;
+      var qty=quantity(q.value),mode=p.value,profileOn=!!(np&&np.checked);
       if(mode==='profile'&&!profileOn){alert('To programme a new profile, choose profile creation.');return}
-      if(profileOn && !(($('#profile-email').value||'').trim()||($('#profile-phone').value||'').trim())){alert('Enter a profile email address or phone number.');return}
+      if(profileOn&&!localStorage.getItem('nuvotap-v7-design')){alert('Please design your business profile in NUVOTAP Studio first.');location.href='studio.html';return}
       if(numberOfCards(cart)+qty>99){alert('Please email hello@nuvotap.com for large orders.');return}
-      var details={type:type,qty:qty,programming:mode,lock:mode==='none'?'none':$('#lock').value,destination:mode==='url'?dest.value.trim():'',newProfile:profileOn,profile:profileOn?{name:$('#profile-name').value.trim(),social:$('#social-url').value.trim(),email:$('#profile-email').value.trim(),phone:$('#profile-phone').value.trim(),business:$('#profile-business').value.trim(),description:$('#profile-description').value.trim()}:null};
+      var design=null;try{if(profileOn)design=JSON.parse(localStorage.getItem('nuvotap-v7-design')||'null')}catch(err){}
+      var details={type:type,qty:qty,programming:mode,lock:mode==='none'?'none':$('#lock').value,destination:mode==='url'?dest.value.trim():'',newProfile:profileOn,profile:design};
       cart.push(details);store();refresh();openCart();
     });
     updateProduct();
@@ -98,7 +99,7 @@
     e.preventDefault();if(!cart.length||!check.reportValidity())return;
     var d=Object.fromEntries(new FormData(check).entries()),t=totals(cart);
     var parts=['NUVOTAP ORDER ENQUIRY',''];
-    cart.forEach(function(x,i){parts.push('ITEM '+(i+1)+' — '+products[x.type],'Quantity: '+x.qty,'Programming: '+x.programming,'Write protection: '+x.lock,'URL: '+(x.destination||'Not provided'),'New profile: '+(x.newProfile?'Yes':'No'));if(x.profile){parts.push('Profile name: '+x.profile.name,'Social: '+x.profile.social,'Email: '+x.profile.email,'Phone: '+x.profile.phone,'Business: '+x.profile.business,'Description: '+x.profile.description)}parts.push('')});
+    cart.forEach(function(x,i){parts.push('ITEM '+(i+1)+' — '+products[x.type],'Quantity: '+x.qty,'Programming: '+x.programming,'Write protection: '+x.lock,'URL: '+(x.destination||'Not provided'),'New profile: '+(x.newProfile?'Yes':'No'));if(x.profile){parts.push('Studio profile name: '+(x.profile.name||''),'Business: '+(x.profile.business||''),'Description: '+(x.profile.desc||''),'Email: '+(x.profile.email||''),'Phone: '+(x.profile.phone||''),'Social links: '+JSON.stringify(x.profile.socials||[]),'Profile colours: '+JSON.stringify({main:x.profile.main,secondary:x.profile.secondary,accent:x.profile.accent}),'Note: customer photo cannot be sent by mailto; request it separately as an email attachment.')}parts.push('')});
     parts.push('Card subtotal: '+money(t.base),'Quantity saving: '+money(t.quantityOff),'Private code saving: '+money(t.coupon),'Programming: '+money(t.programming),'New profiles: '+money(t.profiles),'Known charges: '+money(t.total),'Custom quote needed: '+(t.quote?'Yes':'No'),'Delivery, profile hosting and final payment: to be confirmed','', 'Full name: '+d.name,'Email: '+d.email,'Business name: '+(d.business||''),'Phone: '+(d.phone||''),'Street: '+d.street,'Address line 2: '+(d.address2||''),'Town/city: '+d.town,'Region: '+(d.region||''),'Postcode: '+d.postcode,'Country: '+d.country,'Notes: '+(d.notes||''));
     var body=parts.join('\n');
     var emailLink='mailto:hello@nuvotap.com?subject='+encodeURIComponent('NUVOTAP order enquiry')+'&body='+encodeURIComponent(body);

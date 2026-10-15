@@ -1,31 +1,13 @@
-# NUVOTAP V6 — Fresh rebuild
+# NUVOTAP V7.2 — Storefront, Studio and Supabase backend starter
 
-Fully static GitHub Pages-ready preview. Upload **contents** of this folder to your repository root. Keep CNAME and `.nojekyll`. No npm/build tooling required.
+See `SUPABASE_SETUP.md` for secure activation steps. GitHub Pages static files may be uploaded as-is; the optional secure submission button stays disabled until Supabase is configured. Admin page is `admin.html`. This ZIP does not contain any Supabase credentials.
 
-## Features
-- Separate product pages for white review cards, black review cards and blank NFC cards
-- Large logo, neon/navy styling and light/dark theme
-- Basket with distinct configurations; details stay in browser localStorage
-- Optional URL programming at £0.50 per card, unlocked/locked settings
-- Optional new digital business profile request at £5 per profile configuration
-- Private WELCOME10 promo code, never advertised on public pages
-- Historical automatic review-card multi-buy tiers (2=10%, 3=15%, 4-10=20%), visible in calculations but not publicly marketed
-- Blank-card prices and 11+ orders are quoted, not invented
-- Email enquiry checkout; no card-number capture, no claim of actual order submission
-- Sample digital profile with a downloadable sample vCard
+Pricing: White and black Google review cards £19.99, blank NFC £7, optional business profile £5 once per design (£12 blank + profile), optional URL programming £0.50 per card. Enquiry checkout only; no online payment processor.
 
-## Important
-This is a storefront demonstration. No payment processor, stock verification, shipping calculator, database or real automatic order submission is connected. Do not use it for paid sales until these and legal policies are implemented. GitHub Pages may not be suitable as long-term commercial e-commerce hosting.
+Legal policies are drafts and need legal business identity, actual backend processing/retention details and hosting-duration agreement before paid sales. Refunds are governed by UK law. Buyer pays disclosed change-of-mind return postage for eligible goods; lawful retailer-covered fault returns are excluded.
 
-## Debugging
-The HTML contains all visible content without JavaScript. JavaScript handles only interactivity. If a browser blocks scripts, product browsing still works.
+All product browsing remains visible without JavaScript.
 
 
-V6.1 SAFARI FIX, 15 Oct 2026
-- Retains V6 look and functionality, separates static homepage rendering from basket initialization.
-- Removes automatic changes to the document's colour mode on load; user toggle remains.
-- Does not render basket/cart HTML until basket is opened or changed.
-- Cache-busts app.js and styles.css using versioned resource URLs.
-- Keeps existing CNAME and .nojekyll files.
-- Note: real card payments and server-side order storage are not connected.
-- Safari behaviour requires verification on the user's machine; the exact original Safari fault was not independently reproduced.
+## V7.3 Supabase connection status
+The existing Nuvotap Supabase project URL and publishable key are set in `supabase-config.js`. The database and `profile-submit` function are active. **The admin Edge Function is not deployed, no admin account has been authorised, and spam protections / live testing are pending. Do not launch public submissions yet.** See SUPABASE_SETUP.md.
