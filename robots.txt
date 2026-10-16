@@ -1,0 +1,7 @@
+User-agent: *
+Allow: /
+Disallow: /admin.html
+Disallow: /fr/admin.html
+Disallow: /checkout.html
+Disallow: /fr/checkout.html
+Sitemap: https://nuvotap.com/sitemap.xml
