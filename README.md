@@ -1,13 +1,18 @@
-# NUVOTAP V7.2 — Storefront, Studio and Supabase backend starter
+# NUVOTAP V8.3 — backend-connected staging
 
-See `SUPABASE_SETUP.md` for secure activation steps. GitHub Pages static files may be uploaded as-is; the optional secure submission button stays disabled until Supabase is configured. Admin page is `admin.html`. This ZIP does not contain any Supabase credentials.
+Customer order enquiries now submit to the live Supabase `order-enquiry` Edge Function, which independently validates products, unit prices and quantity discounts, and records orders as `enquiry`/`unpaid`. No payment is taken. Website form presents its order reference only after confirmed server success.
 
-Pricing: White and black Google review cards £19.99, blank NFC £7, optional business profile £5 once per design (£12 blank + profile), optional URL programming £0.50 per card. Enquiry checkout only; no online payment processor.
+Profile submissions use the deployed `profile-submit` v2 endpoint and social URLs are optional. Header search, consent notice, policies, and admin UI included.
 
-Legal policies are drafts and need legal business identity, actual backend processing/retention details and hosting-duration agreement before paid sales. Refunds are governed by UK law. Buyer pays disclosed change-of-mind return postage for eligible goods; lawful retailer-covered fault returns are excluded.
+**Not production-ready**: Order admin SELECT/UPDATE RLS policies are not confirmed applied (database tool blocks writes). Analytics collector and Google Sheets automatic sync are not operational. Payment processor and payment verification do not exist. Anti-abuse rate limiting/CAPTCHA and real browser E2E still needed.
 
-All product browsing remains visible without JavaScript.
+Manual Supabase editor: apply `supabase/migrations/20261016_v8_admin_access.sql` (check current policies first). Google Sheet belongs to NUVOTAP account, formatting must not be changed.
 
+Prices: review cards £19.99, blank £7, digital profile addition £5, URL programming £0.50/card. Never interpret enquiries as paid orders.
 
-## V7.3 Supabase connection status
-The existing Nuvotap Supabase project URL and publishable key are set in `supabase-config.js`. The database and `profile-submit` function are active. **The admin Edge Function is not deployed, no admin account has been authorised, and spam protections / live testing are pending. Do not launch public submissions yet.** See SUPABASE_SETUP.md.
+## V8.3 (16 Oct) update
+- Deployed ACTIVE Supabase Edge Function `order-enquiry` v1; checkout now calls it with server-validated items and records unpaid enquiries on success.
+- Admin dashboard now includes private CSV export for order reconciliation.
+- Supabase orders and analytics admin permissions **still blocked** (verified no SELECT/UPDATE grants). Apply `supabase/migrations/20261016_v8_admin_access.sql` manually before testing admin data view.
+- The Google Sheet is untouched. CSV import/export is not automatic synchronisation.
+- Production is **not** ready: CAPTCHA/rate limiting, real payment provider, approved privacy-consent analytics, automatic Google Sheets sync and browser E2E remain missing.

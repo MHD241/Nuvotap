@@ -12,7 +12,6 @@
    if(!document.getElementById('st-privacy-accept').checked){status.textContent='Please read and accept the privacy notice first.';return}
    const selectors=[...document.querySelectorAll('#st-links .st-link-editor')];
    fields.socials=selectors.map(x=>({platform:x.querySelector('select')?.value||'',url:x.querySelector('input')?.value.trim()||''})).filter(x=>x.url);
-   if(!fields.socials.some(x=>/^https?:\/\//i.test(x.url))){status.textContent='Add at least one social or website link starting with https://';return}
    const img=document.getElementById('st-avatar-image');
    fields.photoData=img&&!img.hidden&&img.src.startsWith('data:image/')?img.src:null;
    fields.privacyAccepted=true;

@@ -95,18 +95,22 @@
   $('#coupon-apply')&&$('#coupon-apply').addEventListener('click',function(){code=($('#coupon').value||'').trim().toUpperCase();store();renderCheckout()});
   $('#coupon')&&$('#coupon').addEventListener('keydown',function(e){if(e.key==='Enter'){e.preventDefault();$('#coupon-apply').click()}});
   var check=$('#checkout-form');
-  if(check)check.addEventListener('submit',function(e){
+  if(check)check.addEventListener('submit',async function(e){
     e.preventDefault();if(!cart.length||!check.reportValidity())return;
-    var d=Object.fromEntries(new FormData(check).entries()),t=totals(cart);
-    var parts=['NUVOTAP ORDER ENQUIRY',''];
-    cart.forEach(function(x,i){parts.push('ITEM '+(i+1)+' — '+products[x.type],'Quantity: '+x.qty,'Programming: '+x.programming,'Write protection: '+x.lock,'URL: '+(x.destination||'Not provided'),'New profile: '+(x.newProfile?'Yes':'No'));if(x.profile){parts.push('Studio profile name: '+(x.profile.name||''),'Business: '+(x.profile.business||''),'Description: '+(x.profile.desc||''),'Email: '+(x.profile.email||''),'Phone: '+(x.profile.phone||''),'Social links: '+JSON.stringify(x.profile.socials||[]),'Profile colours: '+JSON.stringify({main:x.profile.main,secondary:x.profile.secondary,accent:x.profile.accent}),'Note: customer photo cannot be sent by mailto; request it separately as an email attachment.')}parts.push('')});
-    parts.push('Card subtotal: '+money(t.base),'Quantity saving: '+money(t.quantityOff),'Private code saving: '+money(t.coupon),'Programming: '+money(t.programming),'New profiles: '+money(t.profiles),'Known charges: '+money(t.total),'Custom quote needed: '+(t.quote?'Yes':'No'),'Delivery, profile hosting and final payment: to be confirmed','', 'Full name: '+d.name,'Email: '+d.email,'Business name: '+(d.business||''),'Phone: '+(d.phone||''),'Street: '+d.street,'Address line 2: '+(d.address2||''),'Town/city: '+d.town,'Region: '+(d.region||''),'Postcode: '+d.postcode,'Country: '+d.country,'Notes: '+(d.notes||''));
-    var body=parts.join('\n');
-    var emailLink='mailto:hello@nuvotap.com?subject='+encodeURIComponent('NUVOTAP order enquiry')+'&body='+encodeURIComponent(body);
-    var output=$('#order-output');output.hidden=false;
-    output.innerHTML='<h3>Enquiry prepared</h3><p>Choose the button to open your email app, then send the message yourself. No order has been submitted automatically.</p><a class="btn primary" id="email-order" href="'+clean(emailLink)+'">Open email ↗</a><p class="small muted">Or copy the information below:</p><textarea id="order-text" rows="11" readonly>'+clean(body)+'</textarea><button type="button" class="btn secondary" id="copy-order">Copy details</button>';
-    $('#copy-order').addEventListener('click',function(){var self=this;if(navigator.clipboard&&navigator.clipboard.writeText){navigator.clipboard.writeText(body).then(function(){self.textContent='Copied ✓'}).catch(function(){fallback()})}else fallback();function fallback(){var box=$('#order-text');box.select();try{document.execCommand('copy');self.textContent='Copied ✓'}catch(e){self.textContent='Select the text above to copy'}}});
-    output.scrollIntoView({behavior:'smooth',block:'center'});
+    var d=Object.fromEntries(new FormData(check).entries()),t=totals(cart),output=$('#order-output');
+    var config=window.NUVOTAP_SUPABASE||{};
+    if(!config.url||!config.publishableKey){output.hidden=false;output.textContent='Order service is unavailable. Please email hello@nuvotap.com instead.';return}
+    var button=$('#prepare-order');button.disabled=true;output.hidden=false;output.textContent='Sending your order enquiry securely…';
+    try{
+      var payload={name:d.name,email:d.email,business:d.business||'',phone:d.phone||'',notes:d.notes||'',agree:d.termsAgreement==='on',coupon:code,
+        address:{street:d.street,address2:d.address2||'',town:d.town,region:d.region||'',postcode:d.postcode},
+        website:'',items:cart.map(function(x){return {type:x.type,qty:x.qty,programming:x.programming,lock:x.lock,destination:x.destination||'',newProfile:!!x.newProfile}})};
+      var response=await fetch(config.url+'/functions/v1/order-enquiry',{method:'POST',headers:{'Content-Type':'application/json','apikey':config.publishableKey},body:JSON.stringify(payload)});
+      var result=await response.json();if(!response.ok||!result.ok)throw Error(result.error||'Order enquiry was not saved');
+      output.replaceChildren();var h=document.createElement('h3');h.textContent='Enquiry received';var msg=document.createElement('p');msg.textContent='Reference: '+result.orderId+'. No payment has been taken. We will contact you to confirm delivery and payment.';output.append(h,msg);
+      cart=[];store();renderCheckout();updateCount();
+    }catch(err){output.replaceChildren();var error=document.createElement('p');error.textContent='Could not send this enquiry: '+err.message+'. Your basket is preserved. Please try again or contact hello@nuvotap.com.';output.append(error)}
+    finally{button.disabled=false;output.scrollIntoView({behavior:'smooth',block:'center'})}
   });
   // Initialise only on pages that need dynamic order totals. The static homepage
   // is never rewritten by JavaScript, so it remains readable if a script fails.
