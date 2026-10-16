@@ -1,20 +1,18 @@
-# NUVOTAP project state — 16 October 2026
+# NUVOTAP Project State — 16 October 2026
 
-## Verified completed
-- Supabase project `tkuqhjlkmzzdmcnqyjuq` exists. Administrator UID `1ebc7918-1ab7-4769-97ae-d8a1ec32de1b` already authorised for prior profile-submission tables.
-- `profile-submit` Edge Function v2 accepts optional social URLs; profiles are private pending admin approval.
-- `order-enquiry` Edge Function v1 deployed ACTIVE. It validates and prices products server-side and inserts unpaid enquiries (not payments).
-- `nuvotap_orders` and `nuvotap_events` tables created with RLS enabled; no order records when checked. Admin read/update privileges for these newer tables are **not applied** (verified false for all three permissions).
-- Site V8.3 staging source: checkout now calls order-enquiry securely, shows reference only on success, preserves basket on failure; admin orders CSV export. Studio form editor, colours, optional social URLs, search, legal pages and one-time terms agreement remain included.
-- NUVOTAP Google Sheet `1pAEmNoWgRmcGl170ad_3kOd8DGOrMlX8A-TfjZ0yvmI` exists, private in `nuvotap@gmail.com`. User edited layout: NEVER resize existing rows or columns.
+## Bilingual version 8.5
+- Generated EN/FR mirror website pages (all 10 HTML pages under `fr/`), EN / FR navigation switch on every page and mobile/desktop responsive layout in `bilingual.css`.
+- Removed the large standalone home-page Studio promotional section (including its button). Navigation still links to the Studio itself.
+- Applied French translations to static storefront/product/Studio/checkout/admin/legal page content. `locale-fr.js` translates dynamic cart, consent notice, search and admin messages after render; some rare server-generated errors may remain untranslated.
+- Preserved official NUVOTAP logo and favicon supplied in V8.4 brand package, existing Supabase configuration, English cart and checkout functions, existing products and pricing.
+- French pages retain local page navigation; asset/script paths use `../` to load from the common asset directory.
+- Verified: JS files with Node syntax checks; local src/href target checks across EN/FR; bilingual static text audit. Browser-based visual checks could NOT complete because local site URLs are blocked by the browser test environment.
+- Deliverable ZIP not uploaded to GitHub; the LIVE website was NOT changed.
 
-## Open / blockers
-1. Supabase connector blocked DDL for new admin RLS. User must apply and verify `supabase/migrations/20261016_v8_admin_access.sql` in SQL Editor. Do not claim activated yet.
-2. No production payment provider; payment collection and verified paid state absent.
-3. Google Sheets automatic sync absent: requires secure Google auth outside chat connector. CSV export is temporary, manual.
-4. Analytics ingestion (visits/clicks/wishlists) and privacy consent framework need secure implementation and tests.
-5. Anti-spam/bot controls missing on anonymous submission functions. No browser end-to-end test or actual successful submission confirmed. NOT production ready.
-6. Policy text requires legal and business-operator review. Profile hosting duration/edit pricing undecided.
+## Open work unrelated to language
+- Supabase order-enquiry endpoint exists; full order > admin > Google Sheets automated sync and live card payments are not implemented end-to-end. No payment provider connected.
+- Consent-aware analytics, anti-abuse protections and full end-to-end customer testing outstanding.
+- Legal operator identity, legal policy details, profile hosting terms and legal review still needed before taking live payments.
 
 ## Next step
-Apply V8 admin SQL in dedicated NUVOTAP project; verify grants and policies. Then test admin sign-in and harmless test order, add abuse protection, payment provider and sheet sync. Do not upload staging package live prematurely.
+- Extract the bilingual ZIP to a test deployment, check the EN/FR selector and visual layout on Safari on desktop/mobile, then publish after approval.

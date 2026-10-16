@@ -46,6 +46,7 @@
     '<div class="sum-row"><span>Profile creation</span><b>'+money(t.profiles)+'</b></div>'+
     '<div class="sum-row total"><span>'+(t.quote?'Known charges (partial)':'Product subtotal')+'</span><b>'+money(t.total)+(t.quote?' + quote':'')+'</b></div>';
   }
+  if(location.pathname.includes('/fr/'))Object.keys(images).forEach(function(k){if(images[k].indexOf('assets/')===0)images[k]='../'+images[k]});
   function renderCart(){
     var out=$('#cart-items');if(!out)return;
     if(!cart.length){out.innerHTML='<h3>Your basket is empty.</h3><p class="muted">Choose one of our NFC cards.</p><a class="btn primary" href="index.html#collection">Explore products ↗</a>';return}

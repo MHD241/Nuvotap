@@ -1,0 +1,15 @@
+/* Sitewide bilingual controls and flexible French label widths */
+.nv-lang-switch{display:inline-flex;align-items:center;gap:2px;flex-shrink:0;padding:3px;border:1px solid #395071;border-radius:10px;background:rgba(23,39,76,.8);white-space:nowrap}
+.nv-lang-switch a{font-size:12px;letter-spacing:.025em;font-weight:800;padding:7px 9px;line-height:1;border-radius:7px;color:#bacbe5;text-decoration:none}
+.nv-lang-switch a.is-active{background:linear-gradient(100deg,#35d8ee,#718af5);color:#04152c}
+.header-row{gap:clamp(6px,.75vw,12px)}
+.site-header .brand{flex-shrink:0}.header-row nav{gap:clamp(8px,1vw,20px)}
+.site-header nav a{white-space:nowrap;font-size:clamp(11px,.84vw,14px)}
+.header-search{min-width:110px;flex:1 1 140px;max-width:238px}
+.tools{display:flex;flex-shrink:0;align-items:center;gap:6px}
+.tools .icon-btn{white-space:nowrap}.btn,.icon-btn,.product-foot{overflow-wrap:break-word}
+:lang(fr) .hero h1{letter-spacing:-.045em}
+:lang(fr) .product-content h3{font-size:clamp(1.03rem,1.4vw,1.4rem)}
+:lang(fr) .steps article h3{overflow-wrap:anywhere}
+@media(max-width:1190px){.header-search{order:3;flex:1 0 100%;max-width:none}.header-row{flex-wrap:wrap;padding-top:10px;padding-bottom:10px}.tools{margin-left:auto}}
+@media(max-width:650px){.header-search{order:3;width:100%;max-width:none}.nv-lang-switch a{padding:7px 8px}.site-header .brand strong{font-size:19px}.tools{gap:4px}}
