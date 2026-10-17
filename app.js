@@ -1,7 +1,7 @@
 /* NUVOTAP V6: progressive enhancement only. All site content remains visible without JS. */
 (function () {
   'use strict';
-  var prices = {white:19.99, black:19.99, blank:7};
+  var prices = {white:12.99, black:12.99, blank:6.99};
   var products = {white:'White Google Review Card',black:'Black Google Review Card',blank:'Blank NFC Card'};
   var images = {white:'assets/product-1.webp',black:'assets/product-black.webp',blank:'assets/blank-stack.png'};
   var STORAGE = 'nuvotap-v7-basket', PROMO='nuvotap-v7-code', THEME='nuvotap-theme';
