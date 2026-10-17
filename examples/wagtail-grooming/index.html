@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Wagtail Grooming Co. (concept design)</title>
+<style>
+:root{--teal:#0e7c86;--deep:#0a4b52;--sun:#ffc83d;--mist:#e9f6f5;--ink:#10282b}
+*{box-sizing:border-box}body{margin:0;font:17px/1.6 "Trebuchet MS",Verdana,sans-serif;color:var(--ink);background:#fff}
+a{color:inherit}.wrap{width:min(1080px,calc(100% - 40px));margin-inline:auto}
+.concept{background:#111;color:#fff;font:13px/1.4 Arial,sans-serif;padding:9px 16px;text-align:center}.concept a{color:#ffc83d}
+nav{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.logo{font-weight:800;font-size:22px;color:#fff;letter-spacing:-.02em}.logo b{color:var(--sun)}
+nav .links{display:flex;gap:26px;font-weight:700;font-size:15px}nav .links a{text-decoration:none}
+.btn{display:inline-block;background:var(--sun);color:var(--ink);font-weight:800;padding:15px 26px;border-radius:999px;text-decoration:none;transition:transform .2s,box-shadow .2s}.btn:hover{transform:translateY(-3px) rotate(-1deg);box-shadow:0 10px 0 rgba(0,0,0,.12)}
+.hero{background:var(--teal);color:#fff;position:relative;overflow:hidden}
+.hero .wrap{display:grid;grid-template-columns:1.1fr .9fr;gap:30px;align-items:center;padding:60px 0 90px}
+.hero h1{font-size:clamp(40px,6vw,72px);line-height:1.02;margin:0 0 18px;letter-spacing:-.03em}
+.hero p{max-width:460px;font-size:19px;opacity:.95}
+.blob{aspect-ratio:1;border-radius:46% 54% 40% 60%/55% 45% 55% 45%;background:var(--sun);position:relative;animation:morph 9s ease-in-out infinite alternate}
+.blob::after{content:"";position:absolute;inset:18%;border-radius:inherit;background:var(--deep)}
+.blob::before{content:"";position:absolute;z-index:2;left:50%;top:50%;width:34%;aspect-ratio:1;translate:-50% -50%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64' fill='%23ffc83d'%3E%3Cellipse cx='32' cy='42' rx='14' ry='11'/%3E%3Cellipse cx='14' cy='28' rx='6' ry='8'/%3E%3Cellipse cx='26' cy='16' rx='6' ry='8'/%3E%3Cellipse cx='38' cy='16' rx='6' ry='8'/%3E%3Cellipse cx='50' cy='28' rx='6' ry='8'/%3E%3C/svg%3E") center/contain no-repeat}
+@keyframes morph{to{border-radius:60% 40% 58% 42%/42% 58% 42% 58%;rotate:6deg}}
+.services{padding:80px 0}.services h2,.visit h2{font-size:clamp(30px,4vw,44px);margin:0 0 30px;letter-spacing:-.02em}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:18px}
+.card{background:var(--mist);border-radius:26px;padding:26px;transition:transform .25s}.card:hover{transform:translateY(-6px) rotate(-1.2deg)}
+.card h3{margin:0 0 8px;color:var(--deep)}.card p{margin:0;font-size:15px}
+.visit{background:var(--deep);color:#fff;padding:70px 0}.visit .wrap{display:grid;grid-template-columns:1fr 1fr;gap:40px}
+.hours{list-style:none;margin:0;padding:0}.hours li{display:flex;justify-content:space-between;border-bottom:1px solid rgba(255,255,255,.2);padding:10px 0}
+footer{padding:26px 0;font-size:14px;color:#456}
+@media(max-width:800px){.hero .wrap,.visit .wrap{grid-template-columns:1fr}.grid{grid-template-columns:1fr 1fr}.blob{max-width:260px}nav .links{display:none}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<div class="concept">Concept design by NUVOTAP. Wagtail Grooming Co. is not a real business. <a href="../../websites.html">Back to examples</a></div>
+<div class="hero"><div class="wrap" style="padding-bottom:0"><nav style="grid-column:1/-1"><span class="logo">wagtail<b>.</b>grooming</span><span class="links"><a href="#services">Services</a><a href="#visit">Visit</a></span><a class="btn" href="#visit">Book a groom</a></nav></div>
+<div class="wrap"><div><h1>Fresh cuts.<br>Happy tails.</h1><p>Gentle grooming for dogs of every size, with a calm room, no cages and a chat at pickup. Walk-ins welcome on quiet days.</p><p><a class="btn" href="#visit">Book a groom</a></p></div><div class="blob" role="img" aria-label="Abstract paw print"></div></div></div>
+<section class="services" id="services"><div class="wrap"><h2>What we do</h2><div class="grid">
+<div class="card"><h3>Full groom</h3><p>Bath, blow-dry, cut and finish, shaped to the breed and what you ask for.</p></div>
+<div class="card"><h3>Bath and brush</h3><p>A tidy-up between cuts: wash, dry, brush-out and ears.</p></div>
+<div class="card"><h3>Puppy intro</h3><p>A short first visit so young dogs learn grooming is nothing to worry about.</p></div>
+<div class="card"><h3>Nails and tidy</h3><p>Quick nail trims and face-and-feet tidy-ups while you wait.</p></div></div></div></section>
+<section class="visit" id="visit"><div class="wrap"><div><h2>Come and say hello</h2><p>Sample address, High Street, Anytown. Call or message to book. Details on this page are placeholders for a real business.</p><p><a class="btn" href="mailto:hello@yourbusiness.example">hello@yourbusiness.example</a></p></div>
+<ul class="hours"><li><span>Monday to Friday</span><span>9:00 to 17:30</span></li><li><span>Saturday</span><span>9:00 to 16:00</span></li><li><span>Sunday</span><span>Closed</span></li></ul></div></section>
+<footer><div class="wrap">Sample page for demonstration. Not a real business.</div></footer>
+</body></html>

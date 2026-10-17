@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Kerr &amp; Sons Joinery (concept design)</title>
+<style>
+:root{--pine:#16342a;--chalk:#f4f6f1;--brass:#c79a3b;--line:#cdd6c9}
+*{box-sizing:border-box}body{margin:0;background:var(--chalk);color:#14221c;font:17px/1.6 "Arial Narrow",Arial,sans-serif}
+a{color:inherit}.wrap{width:min(1120px,calc(100% - 40px));margin-inline:auto}
+.concept{background:#000;color:#fff;font:13px/1.4 Arial,sans-serif;padding:9px 16px;text-align:center}.concept a{color:#e8c46f}
+.top{background:var(--pine);color:var(--chalk)}.top .wrap{display:flex;justify-content:space-between;align-items:center;padding:20px 0}
+.logo{font-weight:900;font-size:26px;letter-spacing:.08em;text-transform:uppercase}.logo b{color:var(--brass)}
+.top a.q{background:var(--brass);color:var(--pine);font-weight:900;text-transform:uppercase;letter-spacing:.08em;padding:13px 22px;text-decoration:none;transition:letter-spacing .25s}.top a.q:hover{letter-spacing:.14em}
+.hero{background:var(--pine);color:var(--chalk);padding:50px 0 100px;position:relative;overflow:hidden}
+.hero h1{font-size:clamp(54px,11vw,150px);line-height:.88;margin:0;font-weight:900;text-transform:uppercase;letter-spacing:-.02em}
+.hero h1 span{display:block;color:transparent;-webkit-text-stroke:2px var(--brass)}
+.hero p{max-width:520px;font-size:20px;margin:26px 0 0;color:#cfd9d0}
+.grain{position:absolute;right:-60px;top:20px;width:340px;height:340px;border-radius:50%;background:repeating-radial-gradient(circle at 50% 50%,transparent 0 14px,rgba(199,154,59,.35) 14px 16px);animation:spin 40s linear infinite}
+@keyframes spin{to{rotate:360deg}}
+.work{padding:80px 0}.work h2,.how h2{font-size:48px;text-transform:uppercase;margin:0 0 30px;font-weight:900;letter-spacing:-.01em}
+.rows{border-top:3px solid var(--pine)}.row{display:grid;grid-template-columns:90px 1fr 1.2fr;gap:20px;padding:22px 0;border-bottom:1px solid var(--line);align-items:baseline;transition:padding-left .25s,background .25s}.row:hover{padding-left:16px;background:#eaefe5}
+.row b{font-size:22px;color:var(--brass)}.row h3{margin:0;font-size:26px;text-transform:uppercase}.row p{margin:0}
+.how{background:#e8ece3;padding:70px 0}.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}.step{border-top:6px solid var(--brass);padding-top:16px}.step b{font-size:15px;letter-spacing:.14em;color:var(--pine)}.step h3{margin:4px 0 6px;font-size:28px;text-transform:uppercase}
+.cta{background:var(--pine);color:var(--chalk);padding:70px 0;text-align:center}.cta h2{font-size:clamp(34px,6vw,64px);text-transform:uppercase;margin:0 0 18px;font-weight:900}.cta a{display:inline-block;background:var(--brass);color:var(--pine);font-weight:900;text-transform:uppercase;letter-spacing:.08em;padding:16px 30px;text-decoration:none}
+footer{padding:22px 0;font:13px Arial,sans-serif;color:#566}
+@media(max-width:760px){.row{grid-template-columns:50px 1fr}.row p{grid-column:2}.steps{grid-template-columns:1fr}.grain{opacity:.5}}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<div class="concept">Concept design by NUVOTAP. Kerr &amp; Sons Joinery is not a real business. <a href="../../websites.html">Back to examples</a></div>
+<div class="top"><div class="wrap"><span class="logo">Kerr <b>&amp;</b> Sons</span><a class="q" href="#quote">Get a quote</a></div></div>
+<section class="hero"><div class="grain" aria-hidden="true"></div><div class="wrap"><h1>Built<span>to last.</span></h1><p>Fitted kitchens, bespoke storage and restoration joinery, made in our own workshop and fitted by the people who made it.</p></div></section>
+<section class="work"><div class="wrap"><h2>What we build</h2><div class="rows">
+<div class="row"><b>01</b><h3>Kitchens</h3><p>Made to measure around your room, not squeezed from a catalogue.</p></div>
+<div class="row"><b>02</b><h3>Fitted storage</h3><p>Alcoves, wardrobes and under-stair space that earns its keep.</p></div>
+<div class="row"><b>03</b><h3>Doors and windows</h3><p>Repairs and replacements that match the character of your home.</p></div></div></div></section>
+<section class="how"><div class="wrap"><h2>How a job runs</h2><div class="steps">
+<div class="step"><b>STEP 1</b><h3>Visit</h3><p>We measure up, talk through your ideas and agree what is possible.</p></div>
+<div class="step"><b>STEP 2</b><h3>Quote</h3><p>A written, itemised quote with no surprises.</p></div>
+<div class="step"><b>STEP 3</b><h3>Build and fit</h3><p>Made in the workshop, fitted on site, and left clean.</p></div></div></div></section>
+<section class="cta" id="quote"><div class="wrap"><h2>Tell us about your job</h2><a href="mailto:hello@yourjoinery.example">hello@yourjoinery.example</a></div></section>
+<footer><div class="wrap">Sample page for demonstration. Not a real business.</div></footer>
+</body></html>
