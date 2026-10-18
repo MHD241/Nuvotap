@@ -4,6 +4,7 @@
   var prices = {white:9.99, black:9.99, blank:4.99};
   var products = {white:'White Google Review Card',black:'Black Google Review Card',blank:'Blank NFC Card'};
   var images = {white:'assets/product-1.webp',black:'assets/product-black.webp',blank:'assets/blank-stack.png'};
+  var DELIVERY_FEE=2.99, FREE_DELIVERY_OVER=30;
   var STORAGE = 'nuvotap-v7-basket', PROMO='nuvotap-v7-code', THEME='nuvotap-theme';
   var cart = [], code = '', theme='dark';
   var $ = function(selector,root){return (root||document).querySelector(selector)};
@@ -19,7 +20,8 @@
     lines.forEach(function(x){known+=prices[x.type]*x.qty;if(x.type==='white'||x.type==='black')reviewCount+=x.qty;if(x.programming==='url')programming+=x.qty*.5;if(x.newProfile&&x.type==='blank')profiles+=5});
     var reviewSubtotal=lines.reduce(function(s,x){return s+((x.type==='white'||x.type==='black')?prices[x.type]*x.qty:0)},0);var reduction=Math.round(reviewSubtotal*rate(reviewCount)*100)/100;
     var coupon=promoActive()?Math.round((known-reduction)*.10*100)/100:0;
-    return {base:known,quantityOff:reduction,coupon:coupon,programming:programming,profiles:profiles,total:Math.round((known-reduction-coupon+programming+profiles)*100)/100,quote:numberOfCards(lines)>10};
+    var goods=Math.round((known-reduction-coupon+programming+profiles)*100)/100,delivery=(numberOfCards(lines)>10||!lines.length||goods>=FREE_DELIVERY_OVER)?0:DELIVERY_FEE;
+    return {base:known,quantityOff:reduction,coupon:coupon,programming:programming,profiles:profiles,goods:goods,delivery:delivery,total:Math.round((goods+delivery)*100)/100,quote:numberOfCards(lines)>10};
   }
   function store(){try{localStorage.setItem(STORAGE,JSON.stringify(cart));localStorage.setItem(PROMO,code);localStorage.setItem(THEME,theme)}catch(e){}}
   try {
@@ -44,13 +46,14 @@
     '<div class="sum-row"><span>Discount code saving</span><b>−'+money(t.coupon)+'</b></div>'+
     '<div class="sum-row"><span>Programming</span><b>'+money(t.programming)+'</b></div>'+
     '<div class="sum-row"><span>Profile creation</span><b>'+money(t.profiles)+'</b></div>'+
-    '<div class="sum-row total"><span>'+(t.quote?'Known charges (partial)':'Product subtotal')+'</span><b>'+money(t.total)+(t.quote?' + quote':'')+'</b></div>';
+    '<div class="sum-row"><span>Delivery</span><b>'+(t.quote?'In quote':t.delivery?money(t.delivery):'Free')+'</b></div>'+
+    '<div class="sum-row total"><span>'+(t.quote?'Known charges (partial)':'Total')+'</span><b>'+money(t.total)+(t.quote?' + quote':'')+'</b></div>';
   }
   if(location.pathname.includes('/fr/'))Object.keys(images).forEach(function(k){if(images[k].indexOf('assets/')===0)images[k]='../'+images[k]});
   function renderCart(){
     var out=$('#cart-items');if(!out)return;
     if(!cart.length){out.innerHTML='<h3>Your basket is empty.</h3><p class="muted">Choose one of our NFC cards.</p><a class="btn primary" href="index.html#collection">Explore products ↗</a>';return}
-    out.innerHTML=cart.map(function(x,i){return '<div class="basket-item"><img src="'+images[x.type]+'" alt=""><div><strong>'+products[x.type]+'</strong><p>'+x.qty+' card(s) · '+(x.programming==='none'?'Unprogrammed':x.lock==='locked'?'Programmed · locked':'Programmed · unlocked')+(x.newProfile?' · Digital profile':'')+'</p><div class="basket-buttons"><button type="button" data-action="minus" data-index="'+i+'">−</button><span>'+x.qty+'</span><button type="button" data-action="plus" data-index="'+i+'">+</button><button type="button" class="remove" data-action="remove" data-index="'+i+'">Remove</button></div></div></div>'}).join('')+'<div class="basket-summary">'+summaryRows(totals(cart))+'<p class="notice-inline">Final delivery charges and any quote are confirmed separately.</p><a class="btn primary wide" href="checkout.html">Continue to enquiry →</a></div>';
+    out.innerHTML=cart.map(function(x,i){return '<div class="basket-item"><img src="'+images[x.type]+'" alt=""><div><strong>'+products[x.type]+'</strong><p>'+x.qty+' card(s) · '+(x.programming==='none'?'Unprogrammed':x.lock==='locked'?'Programmed · locked':'Programmed · unlocked')+(x.newProfile?' · Digital profile':'')+'</p><div class="basket-buttons"><button type="button" data-action="minus" data-index="'+i+'">−</button><span>'+x.qty+'</span><button type="button" data-action="plus" data-index="'+i+'">+</button><button type="button" class="remove" data-action="remove" data-index="'+i+'">Remove</button></div></div></div>'}).join('')+'<div class="basket-summary">'+summaryRows(totals(cart))+'<p class="notice-inline">Delivery is £2.99, or free on orders of £30 or more. Orders of 11+ cards are quoted separately.</p><a class="btn primary wide" href="checkout.html">Continue to enquiry →</a></div>';
     $$('[data-action]',out).forEach(function(b){b.addEventListener('click',function(){var i=Number(b.getAttribute('data-index')),action=b.getAttribute('data-action');if(!cart[i])return;if(action==='remove')cart.splice(i,1);if(action==='minus'){cart[i].qty--;if(cart[i].qty===0)cart.splice(i,1)}if(action==='plus'&&numberOfCards(cart)<99)cart[i].qty++;store();refresh()})});
   }
   function refresh(){updateCount();renderCart();renderCheckout()}
@@ -66,7 +69,7 @@
       var count=quantity(q.value);
       var sample={type:type,qty:count,programming:mode,newProfile:profileOn};
       var calc=totals([sample]);
-      $('#product-estimate').innerHTML= '<span class="small muted">Estimated product total</span><strong>'+money(calc.total)+(calc.quote?' + bulk quote':'')+'</strong><small>Before delivery charges. Volume discounts apply to Google review cards only.</small>';
+      $('#product-estimate').innerHTML= '<span class="small muted">Estimated product total</span><strong>'+money(calc.goods)+(calc.quote?' + bulk quote':'')+'</strong><small>Before delivery charges. Volume discounts apply to Google review cards only.</small>';
     }
     $('#minus').addEventListener('click',function(){q.value=Math.max(1,quantity(q.value)-1);updateProduct()});
     $('#plus').addEventListener('click',function(){q.value=Math.min(99,quantity(q.value)+1);updateProduct()});

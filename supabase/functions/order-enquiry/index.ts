@@ -35,11 +35,13 @@ Deno.serve(async(req)=>{
  const reviewBase=items.reduce((n,x)=>n+(x.type==="blank"?0:prices[x.type]*x.qty),0);
  const volume=Math.round(reviewBase*discount);
  const promo=s(d.coupon,32).toUpperCase()==="WELCOME10"?Math.round((base-volume)*0.1):0;
- const total=base-volume-promo+program+profiles;
+ const goods=base-volume-promo+program+profiles;
+ const delivery=cards>10?null:goods>=3000?0:299;
+ const total=goods+(delivery||0);
  const address=d.address||{};
  if(!s(address.street,180)||!s(address.town,120)||!s(address.postcode,20))return respond(400,{error:"Delivery address required"});
  const db=createClient(Deno.env.get("SUPABASE_URL"),Deno.env.get("SUPABASE_SERVICE_ROLE_KEY"),{auth:{persistSession:false}});
- const result=await db.from("nuvotap_orders").insert({customer_name:name,customer_email:email,business_name:s(d.business,120),phone:s(d.phone,60),delivery_address:{street:s(address.street,180),address2:s(address.address2,120),town:s(address.town,120),region:s(address.region,120),postcode:s(address.postcode,20),country:"United Kingdom"},items,subtotal_gbp:total/100,total_gbp:total/100,notes:s(d.notes,800),status:"enquiry",payment_status:"unpaid"}).select("id").single();
+ const result=await db.from("nuvotap_orders").insert({customer_name:name,customer_email:email,business_name:s(d.business,120),phone:s(d.phone,60),delivery_address:{street:s(address.street,180),address2:s(address.address2,120),town:s(address.town,120),region:s(address.region,120),postcode:s(address.postcode,20),country:"United Kingdom"},items,subtotal_gbp:goods/100,delivery_gbp:delivery===null?null:delivery/100,total_gbp:total/100,notes:s(d.notes,800),status:"enquiry",payment_status:"unpaid"}).select("id").single();
  if(result.error)return respond(500,{error:"Could not save order enquiry"});
  return respond(201,{ok:true,orderId:result.data.id,paymentStatus:"unpaid",message:"Enquiry recorded; no payment collected"});
  }catch{return respond(400,{error:"Invalid order request"})}

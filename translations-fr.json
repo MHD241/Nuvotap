@@ -127,7 +127,7 @@
   "Browse products ↗": "Voir les produits ↗",
   "Discount code": "Code de réduction",
   "Apply": "Appliquer",
-  "Delivery is quoted separately. Final totals and any digital-profile hosting terms will be confirmed with you before payment.": "La livraison fait l’objet d’un devis distinct. Le montant final et les conditions d’hébergement d’un profil seront confirmés avant paiement.",
+  "Delivery is £2.99, or free on orders of £30 or more. Final totals and any digital-profile hosting terms will be confirmed with you before payment.": "La livraison coûte 2,99 £, ou est gratuite à partir de 30 £ de commande. Le montant final et les conditions d’hébergement d’un profil seront confirmés avant paiement.",
   "PRIVATE WORKSPACE": "ESPACE PRIVÉ",
   "NUVOTAP Admin": "Administration NUVOTAP",
   "Secure profile submission review. Approved designs are not automatically published.": "Examen sécurisé des profils proposés. Les créations approuvées ne sont pas publiées automatiquement.",
@@ -250,7 +250,7 @@
   "Google Review cards": "Cartes pour avis Google",
   "Cards can link visitors to a business review page. A tap never posts a review automatically; reviews are voluntary and should reflect genuine customer experiences. NUVOTAP is not affiliated with Google and cannot guarantee review volume or ratings.": "Les cartes permettent d’ouvrir la page d’avis d’un établissement. Un contact NFC ne publie jamais d’avis automatiquement. Les avis sont volontaires et doivent refléter une expérience réelle. NUVOTAP n’est pas affiliée à Google et ne garantit ni le nombre d’avis ni les notes obtenues.",
   "Delivery, cancellation and refunds": "Livraison, rétractation et remboursements",
-  "Delivery times and costs will be agreed before accepting an order. Your statutory UK consumer rights, including applicable online cancellation and faulty-goods rights, are not affected by these terms. Please read our": "Les délais et frais de livraison seront convenus avant la commande. Vos droits légaux britanniques, notamment les droits de rétractation applicables aux ventes à distance et les droits relatifs aux produits défectueux, ne sont pas limités par ces conditions. Consultez notre",
+  "Delivery within the UK costs £2.99 per order, or is free when the order total after discounts is £30 or more. We choose the carrier and service for each order, normally the fastest suitable option, and confirm the expected delivery time before accepting an order. Your statutory UK consumer rights, including applicable online cancellation and faulty-goods rights, are not affected by these terms. Please read our": "La livraison au Royaume-Uni coûte 2,99 £ par commande, ou est gratuite lorsque le total de la commande après remises atteint 30 £. Nous choisissons le transporteur et le service pour chaque commande, normalement l’option appropriée la plus rapide, et nous confirmons le délai de livraison prévu avant d’accepter une commande. Vos droits légaux britanniques, notamment les droits de rétractation applicables aux ventes à distance et les droits relatifs aux produits défectueux, ne sont pas limités par ces conditions. Consultez notre",
   "Privacy and questions": "Confidentialité et questions",
   "See our": "Consultez notre",
   ". For questions, email": ". Pour toute question, écrivez à",
@@ -292,7 +292,7 @@
   "Programmed · locked": "Programmée · verrouillée",
   "Programmed · unlocked": "Programmée · réinscriptible",
   "Digital profile": "Profil numérique",
-  "Final delivery charges and any quote are confirmed separately.": "Les frais de livraison et tout devis seront confirmés séparément.",
+  "Delivery is £2.99, or free on orders of £30 or more. Orders of 11+ cards are quoted separately.": "La livraison coûte 2,99 £, ou est gratuite à partir de 30 £. Les commandes de 11 cartes ou plus font l’objet d’un devis.",
   "Continue to enquiry →": "Continuer vers la demande →",
   "Estimated product total": "Total estimé",
   "Before delivery charges. Volume discounts apply to Google review cards only.": "Hors livraison. Les remises sur quantité ne concernent que les cartes d’avis Google.",
@@ -379,5 +379,7 @@
   "Profile colours": "Couleurs du profil",
   "Contact email": "E-mail de contact",
   "card(s)": "carte(s)",
-  "No payment has been taken.": "Aucun paiement n’a été prélevé."
+  "No payment has been taken.": "Aucun paiement n’a été prélevé.",
+  "Free": "Gratuite",
+  "In quote": "Dans le devis"
 }
