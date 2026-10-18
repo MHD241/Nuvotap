@@ -12,7 +12,7 @@
 .hero-white{animation:nt-card-in 1s cubic-bezier(.2,.8,.2,1) .4s both,nt-drift-b 8s ease-in-out 1.4s infinite alternate}
 .floating-label{animation:nt-label-in .7s ease-out 1.1s both}
 
-.nt-ring{position:absolute;left:50%;top:50%;width:88%;aspect-ratio:1;border-radius:50%;border:1.5px solid var(--cyan);opacity:0;z-index:-1;pointer-events:none;animation:nt-ripple 5s ease-out infinite}
+.nt-ring{position:absolute;left:50%;top:50%;width:88%;aspect-ratio:1;border-radius:50%;border:1.5px solid var(--cyan);opacity:0;z-index:-1;pointer-events:none;transform:translate(-50%,-50%) scale(.28);animation:nt-ripple 5s ease-out infinite both}
 .nt-ring+.nt-ring{animation-delay:2.5s;border-color:var(--blue)}
 
 /* cards lean toward the pointer (set by motion.js) */
