@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex"><title>NUVOTAP 3D NFC tap (saved design)</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;700&family=Manrope:wght@700;800&display=swap" rel="stylesheet">
+<style>
+/* Saved copy of the 3D NFC tap animation from nuvotap.com/how-nfc-works.html. Self-contained: open this file on its own.
+   Style notes are in STYLE.md next to this file. */
+:root{--bg:#080d20;--panel:#101a35;--panel2:#142344;--text:#f6f9ff;--muted:#9eafcc;--line:#283b65;--cyan:#58eeff;--blue:#6290ff;--input:#0b142b;--shadow:rgba(0,0,0,.36)}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font:15px/1.65 'DM Sans',Arial,sans-serif}
+h3{font-family:Manrope,Arial,sans-serif;letter-spacing:-.03em}
+.wrap{width:min(1200px,calc(100% - 52px));margin-inline:auto;padding-block:40px}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 20px;font-weight:800;font-size:14px;border-radius:13px;border:1px solid var(--line);background:var(--panel);color:var(--text);cursor:pointer}
+/* ---- NFC demo page ---- */
+.nfc-scene{display:grid;grid-template-columns:1.15fr .85fr;gap:30px;align-items:center;padding:30px 0 70px}
+.nfc-stagebox{position:relative;height:520px;display:grid;place-items:center;perspective:1300px;touch-action:pan-y;cursor:grab;border-radius:26px;background:radial-gradient(ellipse at 50% 60%,rgba(40,110,230,.22),transparent 62%),var(--panel);border:1px solid var(--line);overflow:hidden}
+.nfc-stagebox:active{cursor:grabbing}
+.nfc-world{position:relative;width:360px;height:360px;transform-style:preserve-3d;transform:rotateX(var(--rx,56deg)) rotateZ(var(--rz,-30deg));transition:transform .25s ease-out}
+.nfc-table{position:absolute;inset:-60px;border-radius:40px;background:repeating-linear-gradient(0deg,rgba(255,255,255,.04) 0 1px,transparent 1px 28px),repeating-linear-gradient(90deg,rgba(255,255,255,.04) 0 1px,transparent 1px 28px);transform:translateZ(-2px)}
+.nfc-card{position:absolute;left:30px;top:85px;width:300px;height:190px;border-radius:18px;background:linear-gradient(135deg,#ffffff,#dfe8f6);box-shadow:0 0 0 1px rgba(0,0,0,.08),0 2px 0 #b9c6dc,0 4px 0 #a9b8d1,0 6px 0 #9aabc7;transform:translateZ(6px);display:grid;place-items:center;color:#10213d;font:800 17px/1.25 Manrope,Arial,sans-serif;text-align:center}
+.nfc-card svg{display:block;margin:0 auto 8px}
+.nfc-card small{display:block;font:700 12px DM Sans,Arial,sans-serif;color:#5b6d8c;margin-top:4px;letter-spacing:.02em}
+.nfc-ring{position:absolute;left:180px;top:180px;width:60px;height:60px;margin:-30px 0 0 -30px;border-radius:50%;border:2px solid var(--cyan);opacity:0;transform:translateZ(14px) scale(.4)}
+.nfc-shadow{position:absolute;left:110px;top:40px;width:140px;height:280px;border-radius:30px;background:rgba(0,0,0,.55);filter:blur(16px);transform:translateZ(10px);opacity:.2}
+.nfc-phone{position:absolute;left:110px;top:40px;width:140px;height:280px;border-radius:28px;background:#05070d;border:3px solid #26324b;box-shadow:0 0 0 1px #0a0f1c,0 3px 0 #1a2336,0 6px 0 #121a2b;transform:translate3d(0,0,170px)}
+.nfc-screen{position:absolute;inset:7px;border-radius:21px;overflow:hidden;background:linear-gradient(170deg,#12234a,#07101f)}
+.nfc-time{position:absolute;top:34px;left:0;right:0;text-align:center;font:700 34px Manrope,Arial,sans-serif;color:#e8f0ff;letter-spacing:-.02em}
+.nfc-toast{position:absolute;left:8px;right:8px;top:92px;padding:10px 12px;border-radius:14px;background:rgba(255,255,255,.92);color:#10213d;font:700 11px/1.35 DM Sans,Arial,sans-serif;opacity:0;translate:0 -14px}
+.nfc-toast b{display:block;font-size:12px}
+.nfc-page{position:absolute;inset:0;background:#f4f8ff;color:#10213d;padding:46px 14px 14px;text-align:center;font:700 14px/1.3 Manrope,Arial,sans-serif;opacity:0;translate:0 24px}
+.nfc-page .stars{display:block;margin:12px 0;color:#f2a900;font-size:22px;letter-spacing:2px}
+.nfc-page i{display:block;margin:14px auto 0;padding:9px 0;width:84%;border-radius:10px;background:linear-gradient(120deg,#4aeaff,#6a8bff);font-style:normal;font-size:12px}
+.nfc-cam{position:absolute;top:8px;left:50%;width:46px;height:12px;margin-left:-23px;border-radius:8px;background:#000;z-index:3}
+
+.nfc-steps{list-style:none;margin:0;padding:0;display:grid;gap:12px;counter-reset:s}
+.nfc-steps li{counter-increment:s;display:grid;grid-template-columns:40px 1fr;gap:14px;align-items:start;padding:16px 18px;border:1px solid var(--line);border-radius:18px;background:var(--panel);transition:border-color .3s,background .3s}
+.nfc-steps li::before{content:counter(s);display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--input);border:1px solid var(--line);color:var(--cyan);font-weight:800}
+.nfc-steps h3{margin:0 0 3px;font-size:17px}.nfc-steps p{margin:0;color:var(--muted);font-size:13.5px}
+.nfc-ctrl{display:flex;gap:10px;margin-top:14px;align-items:center;flex-wrap:wrap}.nfc-ctrl small{color:var(--muted)}
+.nfc-facts{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin:0;padding:0;list-style:none}
+.nfc-facts li{border:1px solid var(--line);border-radius:22px;padding:26px;background:var(--panel)}.nfc-facts h3{margin:0 0 8px}.nfc-facts p{margin:0;color:var(--muted);font-size:14px}
+
+/* the animated tap: only for visitors who have not asked for reduced motion */
+@media (prefers-reduced-motion:no-preference){
+@keyframes nfc-phone{
+ 0%{transform:translate3d(240px,-90px,190px) rotateZ(14deg)}
+ 22%{transform:translate3d(60px,-20px,190px) rotateZ(6deg)}
+ 34%{transform:translate3d(0,0,170px) rotateZ(0)}
+ 44%,72%{transform:translate3d(0,0,16px) rotateZ(0)}
+ 84%{transform:translate3d(-40px,10px,150px) rotateZ(-5deg)}
+ 100%{transform:translate3d(240px,-90px,190px) rotateZ(14deg)}}
+@keyframes nfc-shadow{0%{transform:translate3d(240px,-90px,10px) scale(1.1);opacity:.08}34%{transform:translate3d(0,0,10px) scale(1.12);opacity:.14}44%,72%{transform:translate3d(0,0,10px) scale(1);opacity:.5}84%{transform:translate3d(-40px,10px,10px) scale(1.1);opacity:.12}100%{transform:translate3d(240px,-90px,10px) scale(1.1);opacity:.08}}
+@keyframes nfc-ring{0%,43%{opacity:0;transform:translateZ(14px) scale(.4)}46%{opacity:.9}62%{opacity:0;transform:translateZ(14px) scale(4.4)}100%{opacity:0;transform:translateZ(14px) scale(4.4)}}
+@keyframes nfc-toast{0%,52%{opacity:0;translate:0 -14px}56%,63%{opacity:1;translate:0 0}67%,100%{opacity:0;translate:0 -6px}}
+@keyframes nfc-page{0%,64%{opacity:0;translate:0 24px}70%,80%{opacity:1;translate:0 0}86%,100%{opacity:0;translate:0 24px}}
+@keyframes nfc-time{0%,64%{opacity:1}68%,82%{opacity:0}86%,100%{opacity:1}}
+.nfc-phone{animation:nfc-phone 9s cubic-bezier(.45,.05,.3,1) infinite}
+.nfc-shadow{animation:nfc-shadow 9s cubic-bezier(.45,.05,.3,1) infinite}
+.nfc-ring{animation:nfc-ring 9s ease-out infinite}
+.nfc-ring.r2{animation-delay:.35s}.nfc-ring.r3{animation-delay:.7s}
+.nfc-toast{animation:nfc-toast 9s ease-out infinite}
+.nfc-page{animation:nfc-page 9s ease-out infinite}
+.nfc-time{animation:nfc-time 9s linear infinite}
+.nfc-steps li{animation:nfc-hl 9s linear infinite}
+.nfc-steps li:nth-child(1){animation-name:nfc-h1}.nfc-steps li:nth-child(2){animation-name:nfc-h2}.nfc-steps li:nth-child(3){animation-name:nfc-h3}.nfc-steps li:nth-child(4){animation-name:nfc-h4}
+@keyframes nfc-h1{0%,34%{border-color:var(--cyan);background:var(--panel2)}36%,100%{border-color:var(--line);background:var(--panel)}}
+@keyframes nfc-h2{0%,34%{border-color:var(--line);background:var(--panel)}36%,50%{border-color:var(--cyan);background:var(--panel2)}52%,100%{border-color:var(--line);background:var(--panel)}}
+@keyframes nfc-h3{0%,50%{border-color:var(--line);background:var(--panel)}52%,64%{border-color:var(--cyan);background:var(--panel2)}66%,100%{border-color:var(--line);background:var(--panel)}}
+@keyframes nfc-h4{0%,64%{border-color:var(--line);background:var(--panel)}66%,86%{border-color:var(--cyan);background:var(--panel2)}88%,100%{border-color:var(--line);background:var(--panel)}}
+.nfc-paused *{animation-play-state:paused!important}
+}
+/* reduced motion: show the finished tap as a still picture */
+@media (prefers-reduced-motion:reduce){
+.nfc-phone{transform:translate3d(0,0,16px)}.nfc-shadow{opacity:.5}.nfc-time{opacity:0}.nfc-page{opacity:1;translate:0 0}.nfc-ctrl button{display:none}
+}
+@media(max-width:900px){.ex-grid,.pg-list,.nfc-facts{grid-template-columns:1fr}.nfc-scene{grid-template-columns:1fr}.nfc-stagebox{height:430px}.nfc-world{scale:.78}}
+
+
+</style></head><body>
+<section class="wrap nfc-scene">
+<div class="nfc-stagebox" aria-label="3D demo of a phone tapping an NFC card" role="img"><div class="nfc-world">
+<div class="nfc-table"></div>
+<div class="nfc-card"><div><svg aria-hidden="true" width="46" height="46" viewBox="0 0 24 24" fill="none" stroke="#2a5cff" stroke-width="1.8" stroke-linecap="round"><path d="M8.5 8.5a5 5 0 0 1 0 7M12 6a8.5 8.5 0 0 1 0 12M15.5 3.5a12 12 0 0 1 0 17"/></svg>Tap to review us<small>NUVOTAP card</small></div></div>
+<div class="nfc-ring"></div><div class="nfc-ring r2"></div><div class="nfc-ring r3"></div>
+<div class="nfc-shadow"></div>
+<div class="nfc-phone"><span class="nfc-cam"></span><div class="nfc-screen"><div class="nfc-time">9:41</div><div class="nfc-toast"><b>Card detected</b>Open the review page?</div><div class="nfc-page">Leave a review<span class="stars">&#9733;&#9733;&#9733;&#9733;&#9733;</span>Tell people how it went<i>Write a review</i></div></div></div>
+</div></div>
+<div><ol class="nfc-steps">
+<li><div><h3>Hold your phone near the card</h3><p>No app to open. Just bring the back of the phone close.</p></div></li>
+<li><div><h3>The phone powers the card</h3><p>The phone gives off a small radio field. The card has a tiny chip and coil that borrow that energy for a moment.</p></div></li>
+<li><div><h3>The phone reads the link</h3><p>The chip holds a web address. The phone reads it and shows a prompt.</p></div></li>
+<li><div><h3>The page opens</h3><p>You choose to open it and land on the page the card was set up for, such as a review page.</p></div></li></ol>
+<div class="nfc-ctrl"><button class="btn secondary" id="nfc-pause" type="button" aria-pressed="false">Pause animation</button><button class="btn secondary" id="nfc-reset" type="button">Reset view</button></div></div>
+</section>
+<script>
+/* Drag to turn the 3D scene, and a pause button for the tap animation. Visual only. */
+(function(){
+  'use strict';
+  var box=document.querySelector('.nfc-stagebox'),world=document.querySelector('.nfc-world');
+  if(box&&world){
+    var rx=56,rz=-30,drag=false,sx=0,sy=0,bx=0,bz=0;
+    var apply=function(){world.style.setProperty('--rx',rx+'deg');world.style.setProperty('--rz',rz+'deg')};
+    box.addEventListener('pointerdown',function(e){drag=true;sx=e.clientX;sy=e.clientY;bx=rx;bz=rz;world.style.transition='none';try{box.setPointerCapture(e.pointerId)}catch(_){}});
+    box.addEventListener('pointermove',function(e){if(!drag)return;rz=bz+(e.clientX-sx)*.4;rx=Math.max(20,Math.min(75,bx-(e.clientY-sy)*.3));apply()});
+    var end=function(){drag=false;world.style.transition=''};
+    box.addEventListener('pointerup',end);box.addEventListener('pointercancel',end);
+    var reset=document.getElementById('nfc-reset');
+    if(reset)reset.addEventListener('click',function(){rx=56;rz=-30;apply()});
+  }
+  var btn=document.getElementById('nfc-pause'),scene=document.querySelector('.nfc-scene');
+  if(btn&&scene){
+    btn.addEventListener('click',function(){
+      var p=scene.classList.toggle('nfc-paused');
+      btn.textContent=p?'Play animation':'Pause animation';
+      btn.setAttribute('aria-pressed',p?'true':'false');
+    });
+  }
+})();
+
+</script></body></html>
