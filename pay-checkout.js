@@ -10,10 +10,10 @@
   var fr = document.documentElement.lang === 'fr';
   var T = fr ? {
     btn: 'Payer par carte →', test: 'MODE TEST : aucun vrai paiement.', wait: 'Redirection vers le paiement sécurisé Stripe…',
-    fail: 'Impossible de lancer le paiement', alt: 'Ou envoyez simplement une demande de commande ci-dessous.'
+    fail: 'Impossible de lancer le paiement', empty: 'Votre panier est vide. Ajoutez une carte, puis revenez ici.', check: 'Veuillez remplir tous les champs obligatoires et cocher la case d’accord.', alt: 'Ou envoyez simplement une demande de commande ci-dessous.'
   } : {
     btn: 'Pay by card →', test: 'TEST MODE: no real payment is taken.', wait: 'Taking you to secure Stripe payment…',
-    fail: 'Could not start card payment', alt: 'Or just send an order enquiry below.'
+    fail: 'Could not start card payment', empty: 'Your basket is empty. Add a card first, then come back here.', check: 'Please fill in all required fields and tick the agreement box.', alt: 'Or just send an order enquiry below.'
   };
   var pay = document.createElement('button');
   pay.type = 'button';
@@ -30,7 +30,8 @@
   pay.addEventListener('click', async function () {
     var cart = [], code = '';
     try { cart = JSON.parse(localStorage.getItem('nuvotap-v7-basket') || '[]'); code = localStorage.getItem('nuvotap-v7-code') || ''; } catch (e) {}
-    if (!Array.isArray(cart) || !cart.length || !form.reportValidity()) return;
+    if (!Array.isArray(cart) || !cart.length) { note.textContent = T.empty; return; }
+    if (!form.reportValidity()) { note.textContent = T.check; return; }
     var cfgDb = window.NUVOTAP_SUPABASE || {};
     if (!cfgDb.url || !cfgDb.publishableKey) { note.textContent = T.fail; return; }
     var d = Object.fromEntries(new FormData(form).entries());
