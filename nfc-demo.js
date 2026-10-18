@@ -16,7 +16,7 @@
   if(btn&&scene){
     btn.addEventListener('click',function(){
       var p=scene.classList.toggle('nfc-paused');
-      btn.textContent=p?'Play animation':'Pause animation';
+      btn.textContent=p?(btn.getAttribute('data-play')||'Play animation'):(btn.getAttribute('data-pause')||'Pause animation');
       btn.setAttribute('aria-pressed',p?'true':'false');
     });
   }
