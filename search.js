@@ -2,9 +2,9 @@
 (()=>{'use strict';const form=document.getElementById('site-search');if(!form)return;
 const input=document.getElementById('site-search-input'),results=document.getElementById('site-search-results');
 const items=[
- {name:'White Google Review Card',desc:'White NFC Google review card · £12.99',url:'white-review.html',terms:'white google review card nfc ratings reviews'},
- {name:'Black Google Review Card',desc:'Black NFC Google review card · £12.99',url:'black-review.html',terms:'black google review card nfc ratings reviews'},
- {name:'Blank NFC Card',desc:'Unprogrammed NFC card · £6.99',url:'blank-nfc.html',terms:'blank white nfc card programmable empty'},
+ {name:'White Google Review Card',desc:'White NFC Google review card · £9.99',url:'white-review.html',terms:'white google review card nfc ratings reviews'},
+ {name:'Black Google Review Card',desc:'Black NFC Google review card · £9.99',url:'black-review.html',terms:'black google review card nfc ratings reviews'},
+ {name:'Blank NFC Card',desc:'Unprogrammed NFC card · £4.99',url:'blank-nfc.html',terms:'blank white nfc card programmable empty'},
  {name:'Digital Business Profile',desc:'Create a profile for +£5',url:'studio.html',terms:'business digital studio profile contact social custom'},
  {name:'Order Enquiry',desc:'Review your basket and delivery details',url:'checkout.html',terms:'checkout order basket delivery'},
  {name:'Returns & Refunds',desc:'Our return policy',url:'returns.html',terms:'refund return policy postage'},
