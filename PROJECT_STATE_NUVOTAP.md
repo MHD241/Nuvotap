@@ -34,3 +34,8 @@
 - Plan to do tomorrow (19 Oct): polish website, activate Stripe live, open for business.
 - Go-live checklist: activate Stripe account; live restricted key -> STRIPE_SECRET_KEY in Supabase; live webhook -> STRIPE_WEBHOOK_SECRET; set pay-config.js enabled:true last; roll the sandbox key pasted in chat; add legal operator name/address to terms.
 - Still open: stand price, product.html orphan (£20), nuvotap-marketing skill old prices, Supabase leaked-password protection, French Websites page, customer contact channel, minimum-customers condition for guarantee.
+
+## 19 Oct updates (website polish)
+- Done: orphan product.html deleted; loading overlay while redirecting to Stripe (pay-checkout.js v=3, EN/FR); "Digital profiles" and "Studio" removed from header nav on all 25 pages (studio.html still exists and is linked from the blank+profile product pages); header re-aligned via final override block in pages.css (v=3); phone-width check of all pages EN/FR: no overflow or errors (studio page has one empty-src image, not investigated).
+- Open: operator name + address for terms (Sam refuses home address; leaning to a virtual office address, not yet chosen; terms keep a placeholder until then); Stripe live activation; live keys + live webhook secret in Supabase; set pay-config.js enabled:true last; roll sandbox key pasted in chat; real-phone check by Sam.
+- Next step: Stripe live activation (Sam at Stripe site, step by step), then go live.
