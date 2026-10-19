@@ -34,6 +34,14 @@ NUVOTAP sells NFC Google-review cards, blank NFC cards, digital profiles (stands
 - Open: refund of delivery cost under guarantee (card price only for now); no FR guide page; the pasted guide text lives in guide.html and the Review Growth Guide doc separately (keep in sync).
 - Role-play practice done (Pets at Home, Wickes, Asda pharmacy, Halfords). Trial length used: 7 days (plan said a week); guarantee = 30-day money back, separate from trial.
 
+## 19 Oct (later): customer accounts, phase 1
+- Built: account.html + account.js (sign up / sign in / forgot + reset password; tabs Daily log, Orders, My details, Card links placeholder), account-prefill.js on checkout (EN/FR) fills empty fields from saved details, "Account" link in header nav on all pages, guide page links to account, privacy policy EN/FR has a "Customer accounts" section. Account page is EN only, noindex.
+- DB (migration customer_accounts_phase1, Supabase): nuvotap_customers, nuvotap_review_logs (RLS: each user only their own rows), nuvotap_orders.user_id, RPCs nuvotap_my_orders() and nuvotap_claim_my_orders() (links orders by CONFIRMED email). Payment edge functions NOT changed. supabase-js pinned 2.45.4 on the account/prefill pages.
+- Tested with a stubbed sign-in library only (UI logic, validation, import of local guide log). NOT tested against real Supabase Auth: Sam must sign up with his own email and confirm it works end to end.
+- 🔴 Before launch: Supabase Auth emails use the default sender, which is heavily rate-limited; set up custom SMTP (e.g. Resend) and check "Confirm email" is ON and the Site URL / redirect URLs include https://nuvotap.com. Leaked-password protection is off (Pro plan feature).
+- Not built: card-link management (needs cards programmed with a NUVOTAP redirect link; phase 2), account deletion self-service (email request for now), French account page.
+- One unpaid test order (created 19 Oct ~08:32 BST) exists in nuvotap_orders; not deleted.
+
 ## Open / to do
 1. Operator name + address for terms (Sam will not use home address; leaning virtual office; not chosen; terms keep a placeholder). Blocks taking paid orders.
 2. Stripe live: activate account, live restricted key -> STRIPE_SECRET_KEY, live webhook -> STRIPE_WEBHOOK_SECRET, then set pay-config.js enabled:true (last), then roll the sandbox key pasted in chat.
