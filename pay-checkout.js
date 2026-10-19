@@ -9,10 +9,10 @@
   if (!cfg.enabled && !preview) return;
   var fr = document.documentElement.lang === 'fr';
   var T = fr ? {
-    btn: 'Payer par carte →', test: 'MODE TEST : aucun vrai paiement.', wait: 'Redirection vers le paiement sécurisé Stripe…',
+    btn: 'Payer par carte →', test: 'MODE TEST : aucun vrai paiement.', wait: 'Redirection vers le paiement sécurisé Stripe…', hold: 'Ne fermez pas cette page.',
     fail: 'Impossible de lancer le paiement', empty: 'Votre panier est vide. Ajoutez une carte, puis revenez ici.', check: 'Veuillez remplir tous les champs obligatoires et cocher la case d’accord.', alt: 'Ou envoyez simplement une demande de commande ci-dessous.'
   } : {
-    btn: 'Pay by card →', test: 'TEST MODE: no real payment is taken.', wait: 'Taking you to secure Stripe payment…',
+    btn: 'Pay by card →', test: 'TEST MODE: no real payment is taken.', wait: 'Taking you to secure Stripe payment…', hold: 'Please don’t close this page.',
     fail: 'Could not start card payment', empty: 'Your basket is empty. Add a card first, then come back here.', check: 'Please fill in all required fields and tick the agreement box.', alt: 'Or just send an order enquiry below.'
   };
   var pay = document.createElement('button');
@@ -27,6 +27,14 @@
   submit.parentNode.insertBefore(pay, submit);
   submit.parentNode.insertBefore(note, submit);
   submit.className = 'btn secondary wide';
+  var overlay = document.createElement('div');
+  overlay.setAttribute('role', 'status');
+  overlay.setAttribute('aria-live', 'polite');
+  overlay.hidden = true;
+  overlay.style.cssText = 'position:fixed;inset:0;z-index:9999;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;padding:24px;text-align:center;background:rgba(8,13,32,.94);color:#fff;font:600 18px/1.4 system-ui,sans-serif';
+  overlay.innerHTML = '<style>@keyframes nvspin{to{transform:rotate(360deg)}}</style><div style="width:54px;height:54px;border:5px solid rgba(255,255,255,.25);border-top-color:#fff;border-radius:50%;animation:nvspin .9s linear infinite"></div><div>' + T.wait + '</div><div style="font-weight:400;font-size:14px;opacity:.8">' + T.hold + '</div>';
+  document.body.appendChild(overlay);
+  window.addEventListener('pageshow', function () { overlay.hidden = true; pay.disabled = false; submit.disabled = false; });
   pay.addEventListener('click', async function () {
     var cart = [], code = '';
     try { cart = JSON.parse(localStorage.getItem('nuvotap-v7-basket') || '[]'); code = localStorage.getItem('nuvotap-v7-code') || ''; } catch (e) {}
@@ -35,7 +43,7 @@
     var cfgDb = window.NUVOTAP_SUPABASE || {};
     if (!cfgDb.url || !cfgDb.publishableKey) { note.textContent = T.fail; return; }
     var d = Object.fromEntries(new FormData(form).entries());
-    pay.disabled = true; submit.disabled = true; note.textContent = T.wait;
+    pay.disabled = true; submit.disabled = true; note.textContent = T.wait; overlay.hidden = false;
     try {
       var payload = {
         name: d.name, email: d.email, business: d.business || '', phone: d.phone || '', notes: d.notes || '',
@@ -51,7 +59,7 @@
       window.location.href = out.url;
     } catch (err) {
       note.textContent = T.fail + ': ' + err.message;
-      pay.disabled = false; submit.disabled = false;
+      pay.disabled = false; submit.disabled = false; overlay.hidden = true;
     }
   });
 })();
