@@ -30,6 +30,7 @@ NUVOTAP sells NFC Google-review cards, blank NFC cards, digital profiles (stands
 - guide.html (EN only, noindex, not in sitemap): full 30-day review guide, "Get your proof sheet" button (Google Sheet /copy link), "Save as PDF" (print). "Guide" link added to header nav on all pages (FR pages link to ../guide.html).
 - returns.html + fr/returns.html FIXED: they said "no voluntary 30-day scheme"; now describe the 30-Day Review Guarantee and point to the guide.
 - One-page A4 guarantee (Design artifact): https://claude.ai/artifact/LBiQZdHXDGScumHP3NVCyT — has QR to nuvotap.com/guide.html; seller line is a placeholder until trading name/address is decided. Print only after that. Not yet visually checked by Sam.
+- Guide page now has a built-in daily log (browser storage on the device, Download CSV, printable blank paper log, 9-in-10 check) because Google Sheets forces the app on phones; the Google Sheet copy link stays as a computer backup.
 - Open: refund of delivery cost under guarantee (card price only for now); no FR guide page; the pasted guide text lives in guide.html and the Review Growth Guide doc separately (keep in sync).
 - Role-play practice done (Pets at Home, Wickes, Asda pharmacy, Halfords). Trial length used: 7 days (plan said a week); guarantee = 30-day money back, separate from trial.
 
