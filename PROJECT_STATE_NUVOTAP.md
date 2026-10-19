@@ -30,4 +30,4 @@ NFC Google-review cards, blank NFC cards, digital profiles (stands not yet on th
 Short replies, one step at a time, plain language; ask for screenshots when guiding; give an honest evaluation of his ideas before building; tell him if something contradicts what was agreed; 🔴 = needs his decision or confirmed problem, 🟠 = doubt or unverified, 🟢 = verified success; update this file after each work phase.
 
 ## 6. Next step
-Sam picks the business address; with his dad: Stripe live activation and SMTP setup; then Sam tests account sign-up, prints the one-pager and starts the Halbeath visits (Asda pharmacy: ask for the store manager, Julie, in until 4 on weekdays, if that conversation was real).
+Sam picks the business address; with his dad: Stripe live activation and SMTP setup; then Sam tests account sign-up, prints the one-pager and starts the Halbeath visits. (Names like Julie, Dave and Karen in the role-plays were made up for practice.)
