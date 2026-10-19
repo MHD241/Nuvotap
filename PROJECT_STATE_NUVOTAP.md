@@ -26,6 +26,13 @@ NUVOTAP sells NFC Google-review cards, blank NFC cards, digital profiles (stands
 - Target: Halbeath Retail Park — Pets at Home, Halfords, Wickes, Asda pharmacy (all chains: ask who decides on local reviews). NOT barbers/salons (Sam's decision). Goal: 3 paying customers in 30 days.
 - Other docs: Review Growth Guide https://claude.ai/code/artifact/37594297-3d26-4ddb-b439-490dfb56b9f0 ; earlier 30-Day Marketing Plan https://claude.ai/code/artifact/7e473a97-4a67-4cff-bba8-4a38bcb23901 (older, barber-based); proof sheet https://docs.google.com/spreadsheets/d/1R_qSV0u9BVDfE7AR2kR9TqaZk2ooMLFD1xqZj8-0VwE/edit?usp=sharing
 
+## 19 Oct (later): guide page + one-page guarantee
+- guide.html (EN only, noindex, not in sitemap): full 30-day review guide, "Get your proof sheet" button (Google Sheet /copy link), "Save as PDF" (print). "Guide" link added to header nav on all pages (FR pages link to ../guide.html).
+- returns.html + fr/returns.html FIXED: they said "no voluntary 30-day scheme"; now describe the 30-Day Review Guarantee and point to the guide.
+- One-page A4 guarantee (Design artifact): https://claude.ai/artifact/LBiQZdHXDGScumHP3NVCyT — has QR to nuvotap.com/guide.html; seller line is a placeholder until trading name/address is decided. Print only after that. Not yet visually checked by Sam.
+- Open: refund of delivery cost under guarantee (card price only for now); no FR guide page; the pasted guide text lives in guide.html and the Review Growth Guide doc separately (keep in sync).
+- Role-play practice done (Pets at Home, Wickes, Asda pharmacy, Halfords). Trial length used: 7 days (plan said a week); guarantee = 30-day money back, separate from trial.
+
 ## Open / to do
 1. Operator name + address for terms (Sam will not use home address; leaning virtual office; not chosen; terms keep a placeholder). Blocks taking paid orders.
 2. Stripe live: activate account, live restricted key -> STRIPE_SECRET_KEY, live webhook -> STRIPE_WEBHOOK_SECRET, then set pay-config.js enabled:true (last), then roll the sandbox key pasted in chat.
