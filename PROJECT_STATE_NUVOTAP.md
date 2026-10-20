@@ -86,7 +86,7 @@ Unknown (Sam to confirm): HMRC self-employed registration (needed once trading i
 - Left out from template (wrong for NUVOTAP): Data Protection Act 1998 + "small fee" (now UK GDPR/DPA 2018, free), promo/market-research emails, fax, "traffic log cookies", Magento cookie list.
 - 🟢 Retention approved by Sam 20 Oct: orders = as long as UK tax law requires, at least 5 years (no card details ever kept); accounts/logs until deletion requested; enquiries 12 months; unused Studio 12 months; guarantee claims with order records. Email provider is Spacemail (by Spaceship), but Sam chose to keep it general in the policy ("our email provider"); also general per Sam: "our database provider" (Supabase, still says servers in Ireland, EU), "our website hosting provider" (GitHub), "Sign-in token". Only Square is named. Self-audit given to Sam (new lines not from existing page/code: in-person mention, "we do not sell your information", delivery company gets name+address only, reply within one month, "tell us first" before ICO); fixed: browser log is sent to us if saved to account. No open items; waiting for Sam's approval to build EN/FR privacy pages.
 
-- 🟢 Sam approved privacy policy (kept all 5 new lines) and asked to push. Built privacy.html + fr/privacy.html from drafts NUVOTAP_Privacy_v1.md / _FR.md (scratchpad build_privacy.py); tested phone/desktop EN/FR OK.
+- 🟢 Sam approved privacy policy (kept all 5 new lines) and asked to push. Built privacy.html + fr/privacy.html from drafts NUVOTAP_Privacy_v1.md / _FR.md (scratchpad build_privacy.py); tested phone/desktop EN/FR OK. 🟢 LIVE: pushed ea59b7d, verified on nuvotap.com/privacy.html and /fr/privacy.html (20 Oct ~13:50).
 
 ## 5g. One-page guarantee rebuilt (20 Oct)
 - Sam's Guarantee_A4.pdf was a flat image; rebuilt same text/layout as /home/claude/outputs/NUVOTAP_Guarantee_A4.pdf (source: scratchpad sheet/sheet.html, logo.png, qr_small.png). Added Sam's logo (glowing N + "nuvotap" on dark navy, rounded tile top-left). Seller line now: "NUVOTAP, Dunfermline, Fife, Scotland · a trading name of Mohammed Shnina". QR verified decoding to https://nuvotap.com/guide.html. Wording otherwise unchanged.
@@ -94,5 +94,6 @@ Unknown (Sam to confirm): HMRC self-employed registration (needed once trading i
 - Logo file from Sam: uploaded PNG 1254x1254 (dark background). Not yet added to the website.
 
 ## 6. Next step
+(20 Oct ~13:50) Terms + Privacy live. Sam to name the next document (likely candidates: returns.html — still dated 15 Oct; guide/guarantee wording). Square website checkout and checklist 5b still waiting.
 (20 Oct) Sam is doing another task first; when back, ask which checklist items in 5b to do and in what order. Older plan below still stands:
 Sam picks the business address; with his dad: Stripe live activation and SMTP setup; then Sam tests account sign-up, prints the one-pager and starts the Halbeath visits. (Names like Julie, Dave and Karen in the role-plays were made up for practice.)
