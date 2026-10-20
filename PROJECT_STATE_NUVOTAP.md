@@ -29,7 +29,7 @@ NFC Google-review cards, blank NFC cards, digital profiles (stands not yet on th
 ## 4b. Account migration (20 Oct 2026)
 - 🟢 Moved to new Claude account. Skill nuvotap-marketing installed (original text unchanged) and showing as available. Repackaged upload zip: /home/claude/nuvotap-marketing.zip (skill description is 208 chars; help page says 200 max, but upload worked).
 - This file lives at /home/claude/PROJECT_STATE.md (temporary session folder — send Sam the updated copy at session end).
-- 🔴 Not connected on the new account: GitHub (repo MHD241/Nuvotap; local clone /home/claude/nuvotap does NOT exist here), Supabase, Stripe. Connect GitHub in claude.ai Settings → Connectors before any website work.
+- 🟢 GitHub linked (20 Oct, push works). 🟢 Supabase tools available in session. Stripe not connected (being replaced by Square). Connect GitHub in claude.ai Settings → Connectors before any website work.
 - 🟢 Repo is public: cloned read-only to /home/claude/nuvotap (latest commit fcebe75, 19 Oct). Pushing still needs GitHub connected.
 - 20 Oct site review (no changes made): 🟢 no JS errors, dead links, 404s or phone overflow on any EN/FR page; prices correct. Findings for Sam to decide: (a) policy pop-up blocks every first visit before browsing; (b) homepage never mentions the 30-Day Review Guarantee, multi-buy discounts, free delivery over £30 or Fife; (c) hero copy is general, not aimed at local businesses wanting reviews; (d) footer has no business name/address (known blocker); (e) Studio page empty image (known).
 - 🟠 Artifact links in section 3 were made on the old account; not checked whether they open from the new one.
@@ -77,7 +77,7 @@ Unknown (Sam to confirm): HMRC self-employed registration (needed once trading i
 
 ## 5f2. Terms pages built (20 Oct) — Sam approved terms v2 and asked to update the website
 - terms.html + fr/terms.html rebuilt from /home/claude/drafts/NUVOTAP_Terms_v2.md and NUVOTAP_Terms_v2_FR.md (build script: scratchpad build_terms.py). Tested phone/desktop EN/FR: no overflow, no JS errors, links OK.
-- Committed LOCALLY only: 613b0e1 in /home/claude/nuvotap. 🔴 NOT LIVE: push failed — GitHub not linked to this Claude account. Options: Sam links GitHub (claude.ai Settings → Connectors) then I push; or Sam uploads /home/claude/outputs/upload/terms.html and upload/fr/terms.html on github.com himself.
+- 🟢 LIVE 20 Oct ~13:22: GitHub linked to new account; pushed 613b0e1 (terms) + 91c12ff (this file saved in repo as PROJECT_STATE_NUVOTAP.md). Verified on nuvotap.com/terms.html and /fr/terms.html (date, seller lines, Square). Repo clone /home/claude/nuvotap now has push access.
 - Next document after terms: Privacy Policy (Sam to supply model/next doc).
 
 ## 5g. One-page guarantee rebuilt (20 Oct)
