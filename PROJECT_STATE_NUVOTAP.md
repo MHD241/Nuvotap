@@ -88,6 +88,11 @@ Unknown (Sam to confirm): HMRC self-employed registration (needed once trading i
 
 - 🟢 Sam approved privacy policy (kept all 5 new lines) and asked to push. Built privacy.html + fr/privacy.html from drafts NUVOTAP_Privacy_v1.md / _FR.md (scratchpad build_privacy.py); tested phone/desktop EN/FR OK. 🟢 LIVE: pushed ea59b7d, verified on nuvotap.com/privacy.html and /fr/privacy.html (20 Oct ~13:50).
 
+## 5h. Homepage fixes (20 Oct ~14:15) — built + tested, NOT pushed (waiting for Sam's OK on screenshots)
+- Checklist 5b items 1 + 2. Guarantee section (#guarantee) added to index.html + fr/index.html before Products: heading "10 new Google reviews in 30 days, or we refund the card.", 3 steps (set up in 3 days / ask 9 in 10 + reply in 3 days / fewer than 10 → card back, refund price paid), exclusions line, buttons Read the guide (guide.html) + Full conditions (returns.html). Wording from approved guarantee only.
+- consent.js rewritten: blocking "I agree" pop-up replaced by slim bottom notice bar ("No advertising cookies or tracking. Read our Terms, Privacy and Returns." + OK), EN/FR, same storage key nuvotap-terms-v1; doesn't block browsing; terms agreement still taken at checkout tickbox. consent.js?v=8.3.0 in all 25 pages.
+- Tests: full EN/FR crawl phone+desktop no errors/overflow; notice shows, page usable without dismissing, OK hides it for good. Previews: /home/claude/outputs/preview/*.png
+
 ## 5g. One-page guarantee rebuilt (20 Oct)
 - Sam's Guarantee_A4.pdf was a flat image; rebuilt same text/layout as /home/claude/outputs/NUVOTAP_Guarantee_A4.pdf (source: scratchpad sheet/sheet.html, logo.png, qr_small.png). Added Sam's logo (glowing N + "nuvotap" on dark navy, rounded tile top-left). Seller line now: "NUVOTAP, Dunfermline, Fife, Scotland · a trading name of Mohammed Shnina". QR verified decoding to https://nuvotap.com/guide.html. Wording otherwise unchanged.
 - 🟠 Footer points to nuvotap.com/terms.html — live page is still the old "proposed" terms until new terms are published.
