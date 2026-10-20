@@ -94,6 +94,7 @@ Unknown (Sam to confirm): HMRC self-employed registration (needed once trading i
 - Logo file from Sam: uploaded PNG 1254x1254 (dark background). Not yet added to the website.
 
 ## 6. Next step
-(20 Oct ~13:55) Terms + Privacy live. returns.html + fr/returns.html kept as-is, only date changed to 20 Oct 2026 (Sam's instruction). Sam to name the next task. Square website checkout and checklist 5b still waiting.
+(20 Oct ~13:55) Terms + Privacy live. returns.html + fr/returns.html kept as-is, only date changed to 20 Oct 2026 (Sam's instruction). Sam to name the next task.
+(20 Oct ~14:00) Small things: delete of test order 136048c3-87c6-4a3c-ba1c-581a94baaee9 (19 Oct 08:32, "Edbf", effb@rf.d, unpaid enquiry £20.97) was CANCELLED at the permission prompt again — still in DB. Also found order 84f0169e-2c84-4682-b6d4-77f0d4789f7c (19 Oct 09:55, "Moh", shninam@icloud.com, £20.97, confirmed/paid) — probably a Stripe TEST payment; not deleted, asked Sam. Marketing skill update proposed (card, needs Sam to press Save): replies in English (Sam's choice), prices £9.99/£4.99, multi-buy 4-10 + 11+ quote, WELCOME10, delivery, not VAT registered, Square for everything, guarantee, Halbeath target + no barbers/salons, goal 3 customers/30 days, 7-day trial only if hesitant. Rest of skill kept. Square website checkout and checklist 5b still waiting.
 (20 Oct) Sam is doing another task first; when back, ask which checklist items in 5b to do and in what order. Older plan below still stands:
 Sam picks the business address; with his dad: Stripe live activation and SMTP setup; then Sam tests account sign-up, prints the one-pager and starts the Halbeath visits. (Names like Julie, Dave and Karen in the role-plays were made up for practice.)
