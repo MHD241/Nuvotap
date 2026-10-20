@@ -80,6 +80,14 @@ Unknown (Sam to confirm): HMRC self-employed registration (needed once trading i
 - 🟢 LIVE 20 Oct ~13:22: GitHub linked to new account; pushed 613b0e1 (terms) + 91c12ff (this file saved in repo as PROJECT_STATE_NUVOTAP.md). Verified on nuvotap.com/terms.html and /fr/terms.html (date, seller lines, Square). Repo clone /home/claude/nuvotap now has push access.
 - Next document after terms: Privacy Policy (Sam to supply model/next doc).
 
+## 5f3. Privacy Policy draft (20 Oct) — NOT live
+- Model from Sam: generic Magento shop privacy template (attachment). Followed its sections/order, NUVOTAP's own wording; kept all UK-GDPR items from current privacy.html (controller, legal grounds, sharing, rights, ICO).
+- Draft: /home/claude/drafts/NUVOTAP_Privacy_v1.md. Facts checked in code: no cookies, no analytics/visit tracking on public pages (admin reads nuvotap_events but nothing writes it); localStorage keys nuvotap-v7-basket, -v7-code, -theme, -terms-v1, -v7-design, -guide-log-v1, Supabase sign-in token; Supabase eu-west-1 (Ireland); Square named.
+- Left out from template (wrong for NUVOTAP): Data Protection Act 1998 + "small fee" (now UK GDPR/DPA 2018, free), promo/market-research emails, fax, "traffic log cookies", Magento cookie list.
+- 🟢 Retention approved by Sam 20 Oct: orders = as long as UK tax law requires, at least 5 years (no card details ever kept); accounts/logs until deletion requested; enquiries 12 months; unused Studio 12 months; guarantee claims with order records. Email provider is Spacemail (by Spaceship), but Sam chose to keep it general in the policy ("our email provider"); also general per Sam: "our database provider" (Supabase, still says servers in Ireland, EU), "our website hosting provider" (GitHub), "Sign-in token". Only Square is named. Self-audit given to Sam (new lines not from existing page/code: in-person mention, "we do not sell your information", delivery company gets name+address only, reply within one month, "tell us first" before ICO); fixed: browser log is sent to us if saved to account. No open items; waiting for Sam's approval to build EN/FR privacy pages.
+
+- 🟢 Sam approved privacy policy (kept all 5 new lines) and asked to push. Built privacy.html + fr/privacy.html from drafts NUVOTAP_Privacy_v1.md / _FR.md (scratchpad build_privacy.py); tested phone/desktop EN/FR OK.
+
 ## 5g. One-page guarantee rebuilt (20 Oct)
 - Sam's Guarantee_A4.pdf was a flat image; rebuilt same text/layout as /home/claude/outputs/NUVOTAP_Guarantee_A4.pdf (source: scratchpad sheet/sheet.html, logo.png, qr_small.png). Added Sam's logo (glowing N + "nuvotap" on dark navy, rounded tile top-left). Seller line now: "NUVOTAP, Dunfermline, Fife, Scotland · a trading name of Mohammed Shnina". QR verified decoding to https://nuvotap.com/guide.html. Wording otherwise unchanged.
 - 🟠 Footer points to nuvotap.com/terms.html — live page is still the old "proposed" terms until new terms are published.
