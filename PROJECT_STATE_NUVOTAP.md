@@ -94,6 +94,6 @@ Unknown (Sam to confirm): HMRC self-employed registration (needed once trading i
 - Logo file from Sam: uploaded PNG 1254x1254 (dark background). Not yet added to the website.
 
 ## 6. Next step
-(20 Oct ~13:50) Terms + Privacy live. Sam to name the next document (likely candidates: returns.html — still dated 15 Oct; guide/guarantee wording). Square website checkout and checklist 5b still waiting.
+(20 Oct ~13:55) Terms + Privacy live. returns.html + fr/returns.html kept as-is, only date changed to 20 Oct 2026 (Sam's instruction). Sam to name the next task. Square website checkout and checklist 5b still waiting.
 (20 Oct) Sam is doing another task first; when back, ask which checklist items in 5b to do and in what order. Older plan below still stands:
 Sam picks the business address; with his dad: Stripe live activation and SMTP setup; then Sam tests account sign-up, prints the one-pager and starts the Halbeath visits. (Names like Julie, Dave and Karen in the role-plays were made up for practice.)
