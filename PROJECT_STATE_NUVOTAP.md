@@ -97,6 +97,13 @@ Unknown (Sam to confirm): HMRC self-employed registration (needed once trading i
 - Printable A4 landscape table /home/claude/outputs/NUVOTAP_Visit_Log_A4.pdf (source scratchpad sheet/visits.html): logo, Area + Sheet no., 10 rows, columns # / Name / State (Buy, Trial, No tick boxes) / Date / Notes / Signature; footer 'Trial = free 7-day trial card (unlocked). Buy = paid on the day.' - 🟢 Interactive version (21 Oct, Sam asked): private web app https://claude.ai/artifact/W59WoU6k1Djgt2LX3UGith — add visit (Name, Buy/Trial/No, Date, Notes, finger signature), saved online in the artifact database (collection 'visits', fields name/state/date/notes/signature PNG/createdAt), totals, filters, edit/delete, trial follow-up date = visit + 7 days. Only Sam can open it unless he shares it (Share menu). Source: scratchpad visitlog/visit-log.html. Store was empty at publish (checked).
 - Next after this: review links for Pets at Home, Wickes, Asda pharmacy (Halbeath).
 
+## 5j. Visits app (21 Oct) — installable web app at nuvotap.com/visits/
+- Sam wanted the visit log as its own app in a separate repo; this session can't create GitHub repos (403), so per Sam's OK it lives in the website repo under /visits/ (noindex, robots Disallow, not linked from site).
+- Files: visits/index.html (sign-in + log UI, supabase-js 2.45.4, ../supabase-config.js), manifest.webmanifest, sw.js (offline app shell, never caches data), icons from Sam's logo (icon-180/192/512, maskable-512).
+- Supabase: new table public.nuvotap_visits (id, created_at, updated_at, created_by, name, state buy/trial/no, visit_date, notes, signature PNG data URL ≤200k) with RLS: only users in nuvotap_admins can select/insert/update/delete; anon has no access. Migration create_nuvotap_visits applied 21 Oct; security advisor shows no new issues.
+- Sign-in: Sam's admin account shninam@icloud.com, once per phone (session kept). No sign-up in the app.
+- The Claude-hosted Visit Log artifact (5i) still exists separately; the app does not share its data.
+
 ## 5g. One-page guarantee rebuilt (20 Oct)
 - Sam's Guarantee_A4.pdf was a flat image; rebuilt same text/layout as /home/claude/outputs/NUVOTAP_Guarantee_A4.pdf (source: scratchpad sheet/sheet.html, logo.png, qr_small.png). Added Sam's logo (glowing N + "nuvotap" on dark navy, rounded tile top-left). Seller line now: "NUVOTAP, Dunfermline, Fife, Scotland · a trading name of Mohammed Shnina". QR verified decoding to https://nuvotap.com/guide.html. Wording otherwise unchanged.
 - 🟠 Footer points to nuvotap.com/terms.html — live page is still the old "proposed" terms until new terms are published.

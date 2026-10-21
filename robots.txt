@@ -4,4 +4,5 @@ Disallow: /admin.html
 Disallow: /fr/admin.html
 Disallow: /checkout.html
 Disallow: /fr/checkout.html
+Disallow: /visits/
 Sitemap: https://nuvotap.com/sitemap.xml
