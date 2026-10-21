@@ -93,6 +93,9 @@ Unknown (Sam to confirm): HMRC self-employed registration (needed once trading i
 - consent.js rewritten: blocking "I agree" pop-up replaced by slim bottom notice bar ("No advertising cookies or tracking. Read our Terms, Privacy and Returns." + OK), EN/FR, same storage key nuvotap-terms-v1; doesn't block browsing; terms agreement still taken at checkout tickbox. consent.js?v=8.3.0 in all 25 pages.
 - Tests: full EN/FR crawl phone+desktop no errors/overflow; notice shows, page usable without dismissing, OK hides it for good. Previews: /home/claude/outputs/preview/*.png. Clickable preview artifact (21 Oct): https://claude.ai/artifact/9ojNhhcRbokSYB7jWuiVvu (bundled from branch homepage-guarantee; links go to live site). Changes sit on GitHub branch homepage-guarantee (b6c2d97), main untouched; merge to main on Sam's 'go'.
 
+## 5i. Visit log sheet (21 Oct)
+- Printable A4 landscape table /home/claude/outputs/NUVOTAP_Visit_Log_A4.pdf (source scratchpad sheet/visits.html): logo, Area + Sheet no., 10 rows, columns # / Name / State (Buy, Trial, No tick boxes) / Date / Notes / Signature; footer 'Trial = free 7-day trial card (unlocked). Buy = paid on the day.' Next after this: review links for Pets at Home, Wickes, Asda pharmacy (Halbeath).
+
 ## 5g. One-page guarantee rebuilt (20 Oct)
 - Sam's Guarantee_A4.pdf was a flat image; rebuilt same text/layout as /home/claude/outputs/NUVOTAP_Guarantee_A4.pdf (source: scratchpad sheet/sheet.html, logo.png, qr_small.png). Added Sam's logo (glowing N + "nuvotap" on dark navy, rounded tile top-left). Seller line now: "NUVOTAP, Dunfermline, Fife, Scotland · a trading name of Mohammed Shnina". QR verified decoding to https://nuvotap.com/guide.html. Wording otherwise unchanged.
 - 🟠 Footer points to nuvotap.com/terms.html — live page is still the old "proposed" terms until new terms are published.
